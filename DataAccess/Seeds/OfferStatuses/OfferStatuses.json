@@ -1,0 +1,18 @@
+﻿[
+  {
+    "Id": 1,
+    "StatusName": "Active"
+  },
+  {
+    "Id": 2,
+    "StatusName": "Inactive"
+  },
+  {
+    "Id": 3,
+    "StatusName": "Pending"
+  },
+  {
+    "Id": 4,
+    "StatusName": "Rejected"
+  }
+]

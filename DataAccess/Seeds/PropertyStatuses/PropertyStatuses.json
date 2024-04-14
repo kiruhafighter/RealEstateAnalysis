@@ -1,0 +1,18 @@
+﻿[
+  {
+    "Id": 1,
+    "StatusName": "Active"
+  },
+  {
+    "Id": 2,
+    "StatusName": "Sold"
+  },
+  {
+    "Id": 3,
+    "StatusName": "Rented"
+  },
+  {
+    "Id": 4,
+    "StatusName": "Inactive"
+  }
+]

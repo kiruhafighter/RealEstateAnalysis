@@ -1,0 +1,34 @@
+﻿[
+  {
+    "Id": 1,
+    "TypeName": "House"
+  },
+  {
+    "Id": 2,
+    "TypeName": "Condo"
+  },
+  {
+    "Id": 3,
+    "TypeName": "Apartment"
+  },
+  {
+    "Id": 4,
+    "TypeName": "Office Building"
+  },
+  {
+    "Id": 5,
+    "TypeName": "Warehouse"
+  },
+  {
+    "Id": 6,
+    "TypeName": "Land"
+  },
+  {
+    "Id": 7,
+    "TypeName": "Farm"
+  },
+  {
+    "Id": 8,
+    "TypeName": "Other"
+  }
+]
