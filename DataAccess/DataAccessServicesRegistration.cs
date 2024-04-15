@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DataAccess.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Repositories;
 
 namespace DataAccess;
 
@@ -15,6 +17,13 @@ public static class DataAccessServicesRegistration
         {
             builder.UseSqlServer(configuration.GetConnectionString(DBConnectionStringKey));
         });
+        
+        services.AddScoped<IAgentRepository, AgentRepository>();
+        services.AddScoped<IImageRepository, ImageRepository>();
+        services.AddScoped<IOfferRepository, OfferRepository>();
+        services.AddScoped<IPropertyRepository, PropertyRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUsersFavouriteRepository, UsersFavouriteRepository>();
         
         return services;
     }
