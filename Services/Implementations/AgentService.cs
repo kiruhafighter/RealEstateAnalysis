@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using AutoMapper;
+﻿using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Repositories;
@@ -44,21 +43,21 @@ namespace Services.Implementations
                 PhoneNumber = addAgentDto.PhoneNumber,
                 UserId = userId
             };
-
+            
             var added = await _agentRepository.AddAsync(agent, cancellationToken);
-
+            
             if (!added)
             {
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
-
+            
             var updateUserRole = await _userRepository.UpdateUserRoleAsync(userId, (int)Role.Agent, cancellationToken);
             
             if (!updateUserRole)
             {
                 return Results.StatusCode(StatusCodes.Status500InternalServerError);
             }
-
+            
             return Results.Ok();
         }
 
