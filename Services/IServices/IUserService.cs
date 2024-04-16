@@ -8,5 +8,9 @@ namespace Services.IServices
         Task<IResult> RegisterAsync(AddUserDto user, CancellationToken cancellationToken);
         
         Task<IResult> LoginAsync(UserLoginDto request, CancellationToken cancellationToken);
+        
+        Task<IResult> GetUserDetails(Guid id, CancellationToken cancellationToken);
+        
+        Task<IResult> ChangeUserDetails(Guid id, UpdateUserInfoDto updatedInfo, CancellationToken cancellationToken);
     }
 }

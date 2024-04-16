@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Repositories;
 
 namespace DataAccess;
-
+    
 public static class DataAccessServicesRegistration
 {
     private const string DBConnectionStringKey = "RealEstateManagementDB";

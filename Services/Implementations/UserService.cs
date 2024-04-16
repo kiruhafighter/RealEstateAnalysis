@@ -1,23 +1,31 @@
-﻿using System.Security.Cryptography;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
+using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Repositories;
 using Services.DTOs.UserDTOs;
 using Services.IServices;
+using Services.Utils;
 
 namespace Services.Implementations
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IConfiguration _configuration;
+        private readonly JWTOptions _jwtOptions;
+        private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository, IConfiguration configuration)
+        public UserService(IUserRepository userRepository, 
+            IOptions<JWTOptions> jwtOptions, 
+            IMapper mapper)
         {
             _userRepository = userRepository;
-            _configuration = configuration;
+            _mapper = mapper;
+            _jwtOptions = jwtOptions.Value;
         }
 
         public async Task<IResult> RegisterAsync(AddUserDto addUserRequest, CancellationToken cancellationToken)
@@ -58,20 +66,65 @@ namespace Services.Implementations
         public async Task<IResult> LoginAsync(UserLoginDto request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
-
+            
             if (user is null)
             {
                 return Results.NotFound("User with such email is not found");
             }
-
+            
             if (!ValidatePassword(request.Password, user.PasswordHash, user.PasswordSalt))
             {
                 return Results.BadRequest("Wrong password");
             }
             
+            var claims = new List<Claim>
+            {
+                new (ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new (ClaimTypes.Email, user.Email),
+                new (ClaimTypes.Role, user.Role!.RoleName)
+            };
             
+            var expiryTime = DateTime.UtcNow.AddMinutes(_jwtOptions.TokenExpiresInMinutes);
+            var token = JWTGenerator.GenerateToken(_jwtOptions, claims, expiryTime);
+            var accessToken = new JwtSecurityTokenHandler().WriteToken(token);
+            
+            return Results.Ok(new TokenDto
+            {
+                AccessToken = accessToken,
+                AccessTokenExpiryTime = expiryTime
+            });
+        }
 
-            return Results.Ok("Not implemented");
+        public async Task<IResult> GetUserDetails(Guid id, CancellationToken cancellationToken)
+        {
+            var user = await _userRepository.GetByIdAsync(id, cancellationToken);
+            
+            if (user is null)
+            {
+                return Results.NotFound("User is not found");
+            }
+            
+            var userDetails = _mapper.Map<UserDetailsDto>(user);
+            
+            return Results.Ok(userDetails);
+        }
+        
+        public async Task<IResult> ChangeUserDetails(Guid id, UpdateUserInfoDto updatedInfo, CancellationToken cancellationToken)
+        {
+            if (!await _userRepository.ExistsAsync(id, cancellationToken))
+            {
+                return Results.NotFound("User is not found");
+            }
+            
+            var update = await _userRepository.UpdateUserInfoAsync(id, updatedInfo.Email, updatedInfo.FirstName,
+                updatedInfo.LastName, cancellationToken);
+            
+            if (!update)
+            {
+                return Results.StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            
+            return Results.Ok();
         }
         
         private static (string Hash, string Salt) CreatePasswordHashAndSalt(string password)
