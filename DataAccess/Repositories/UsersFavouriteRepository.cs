@@ -2,12 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 
-namespace DataAccess.Repositories
+namespace DataAccess.Repositories;
+
+internal sealed class UsersFavouriteRepository : BaseRepository<UsersFavourite, int>, IUsersFavouriteRepository
 {
-    internal sealed class UsersFavouriteRepository : BaseRepository<UsersFavourite, int>, IUsersFavouriteRepository
+    public UsersFavouriteRepository(DbContext context) : base(context)
     {
-        public UsersFavouriteRepository(DbContext context) : base(context)
-        {
         }
-    }
 }

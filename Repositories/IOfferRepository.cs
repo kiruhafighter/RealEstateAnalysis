@@ -1,9 +1,8 @@
 ﻿using Domain.Entities;
 
-namespace Repositories
+namespace Repositories;
+
+public interface IOfferRepository : IBaseRepository<Offer, Guid>
 {
-    public interface IOfferRepository : IBaseRepository<Offer, Guid>
-    {
         
-    }
 }

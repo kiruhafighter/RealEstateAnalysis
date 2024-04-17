@@ -1,11 +1,10 @@
-﻿namespace Services.DTOs.UserDTOs
+﻿namespace Services.DTOs.UserDTOs;
+
+public record UserDetailsDto
 {
-    public record UserDetailsDto
-    {
-        public string Email { get; init; } = default!;
+    public string Email { get; init; } = default!;
     
-        public string FirstName { get; init; } = default!;
+    public string FirstName { get; init; } = default!;
     
-        public string LastName { get; init; } = default!;
-    }
+    public string LastName { get; init; } = default!;
 }

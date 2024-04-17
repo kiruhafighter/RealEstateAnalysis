@@ -1,9 +1,8 @@
-﻿namespace Services.DTOs.UserDTOs
-{
-    public sealed record TokenDto
-    {
-        public string AccessToken { get; init; } = default!;
+﻿namespace Services.DTOs.UserDTOs;
 
-        public DateTime AccessTokenExpiryTime { get; init; }
-    }
+public sealed record TokenDto
+{
+    public string AccessToken { get; init; } = default!;
+
+    public DateTime AccessTokenExpiryTime { get; init; }
 }

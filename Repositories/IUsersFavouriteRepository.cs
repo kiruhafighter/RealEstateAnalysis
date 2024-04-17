@@ -1,9 +1,8 @@
 ﻿using Domain.Entities;
 
-namespace Repositories
+namespace Repositories;
+
+public interface IUsersFavouriteRepository : IBaseRepository<UsersFavourite, int>
 {
-    public interface IUsersFavouriteRepository : IBaseRepository<UsersFavourite, int>
-    {
         
-    }
 }

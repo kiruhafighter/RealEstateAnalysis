@@ -6,23 +6,23 @@ using Services.DTOs.AgentDTOs;
 using Services.IServices;
 using Role = Services.Enums.Role;
 
-namespace Services.Implementations
-{
-    public class AgentService : IAgentService
-    {
-        private readonly IAgentRepository _agentRepository;
-        private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper;
+namespace Services.Implementations;
 
-        public AgentService(IAgentRepository agentRepository, IUserRepository userRepository, IMapper mapper)
-        {
+public class AgentService : IAgentService
+{
+    private readonly IAgentRepository _agentRepository;
+    private readonly IUserRepository _userRepository;
+    private readonly IMapper _mapper;
+
+    public AgentService(IAgentRepository agentRepository, IUserRepository userRepository, IMapper mapper)
+    {
             _agentRepository = agentRepository;
             _userRepository = userRepository;
             _mapper = mapper;
         }
         
-        public async Task<IResult> AddAgentAccountAsync(Guid userId, AddAgentDto addAgentDto, CancellationToken cancellationToken)
-        {
+    public async Task<IResult> AddAgentAccountAsync(Guid userId, AddAgentDto addAgentDto, CancellationToken cancellationToken)
+    {
             if (await _agentRepository.AgentExistsByUserIdAsync(userId, cancellationToken))
             {
                 return Results.BadRequest("Agent already exists for you");
@@ -61,8 +61,8 @@ namespace Services.Implementations
             return Results.Ok();
         }
 
-        public async Task<IResult> GetAgentAccountDetailsAsync(Guid id, CancellationToken cancellationToken)
-        {
+    public async Task<IResult> GetAgentAccountDetailsAsync(Guid id, CancellationToken cancellationToken)
+    {
             var agent = await _agentRepository.GetByIdAsync(id, cancellationToken);
             
             if (agent is null)
@@ -75,8 +75,8 @@ namespace Services.Implementations
             return Results.Ok(agentDetails);
         }
         
-        public async Task<IResult> GetAgentByUserIdAsync(Guid userId, CancellationToken cancellationToken)
-        {
+    public async Task<IResult> GetAgentByUserIdAsync(Guid userId, CancellationToken cancellationToken)
+    {
             var agent = await _agentRepository.GetAgentByUserIdAsync(userId, cancellationToken);
             
             if (agent is null)
@@ -89,8 +89,8 @@ namespace Services.Implementations
             return Results.Ok(agentDetails);
         }
         
-        public async Task<IResult> UpdateAgentInfoAsync(Guid userId, UpdateAgentDto updateInfo, CancellationToken cancellationToken)
-        {
+    public async Task<IResult> UpdateAgentInfoAsync(Guid userId, UpdateAgentDto updateInfo, CancellationToken cancellationToken)
+    {
             var agent = await _agentRepository.GetAgentByUserIdAsync(userId, cancellationToken);
             
             if (agent is null)
@@ -123,5 +123,4 @@ namespace Services.Implementations
             
             return Results.Ok();
         }
-    }
 }

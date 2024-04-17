@@ -2,12 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 
-namespace DataAccess.Repositories
+namespace DataAccess.Repositories;
+
+internal sealed class ImageRepository : BaseRepository<Image, int>, IImageRepository
 {
-    internal sealed class ImageRepository : BaseRepository<Image, int>, IImageRepository
+    public ImageRepository(DbContext context) : base(context)
     {
-        public ImageRepository(DbContext context) : base(context)
-        {
         }
-    }
 }

@@ -2,12 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 
-namespace DataAccess.Repositories
+namespace DataAccess.Repositories;
+
+internal sealed class OfferRepository : BaseRepository<Offer, Guid>, IOfferRepository
 {
-    internal sealed class OfferRepository : BaseRepository<Offer, Guid>, IOfferRepository
+    public OfferRepository(DbContext context) : base(context)
     {
-        public OfferRepository(DbContext context) : base(context)
-        {
         }
-    }
 }

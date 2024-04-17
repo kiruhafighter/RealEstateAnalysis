@@ -11,25 +11,25 @@ using Services.DTOs.UserDTOs;
 using Services.IServices;
 using Services.Utils;
 
-namespace Services.Implementations
-{
-    public class UserService : IUserService
-    {
-        private readonly IUserRepository _userRepository;
-        private readonly JWTOptions _jwtOptions;
-        private readonly IMapper _mapper;
+namespace Services.Implementations;
 
-        public UserService(IUserRepository userRepository, 
-            IOptions<JWTOptions> jwtOptions, 
-            IMapper mapper)
-        {
+public class UserService : IUserService
+{
+    private readonly IUserRepository _userRepository;
+    private readonly JWTOptions _jwtOptions;
+    private readonly IMapper _mapper;
+
+    public UserService(IUserRepository userRepository, 
+        IOptions<JWTOptions> jwtOptions, 
+        IMapper mapper)
+    {
             _userRepository = userRepository;
             _mapper = mapper;
             _jwtOptions = jwtOptions.Value;
         }
 
-        public async Task<IResult> RegisterAsync(AddUserDto addUserRequest, CancellationToken cancellationToken)
-        {
+    public async Task<IResult> RegisterAsync(AddUserDto addUserRequest, CancellationToken cancellationToken)
+    {
             if (await _userRepository.ExistsByEmailAsync(addUserRequest.Email, cancellationToken))
             {
                 return Results.BadRequest("User already exists.");
@@ -63,8 +63,8 @@ namespace Services.Implementations
             return Results.Ok();
         }
         
-        public async Task<IResult> LoginAsync(UserLoginDto request, CancellationToken cancellationToken)
-        {
+    public async Task<IResult> LoginAsync(UserLoginDto request, CancellationToken cancellationToken)
+    {
             var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
             
             if (user is null)
@@ -95,8 +95,8 @@ namespace Services.Implementations
             });
         }
 
-        public async Task<IResult> GetUserDetails(Guid id, CancellationToken cancellationToken)
-        {
+    public async Task<IResult> GetUserDetails(Guid id, CancellationToken cancellationToken)
+    {
             var user = await _userRepository.GetByIdAsync(id, cancellationToken);
             
             if (user is null)
@@ -109,8 +109,8 @@ namespace Services.Implementations
             return Results.Ok(userDetails);
         }
         
-        public async Task<IResult> ChangeUserDetails(Guid id, UpdateUserInfoDto updatedInfo, CancellationToken cancellationToken)
-        {
+    public async Task<IResult> ChangeUserDetails(Guid id, UpdateUserInfoDto updatedInfo, CancellationToken cancellationToken)
+    {
             if (!await _userRepository.ExistsAsync(id, cancellationToken))
             {
                 return Results.NotFound("User is not found");
@@ -127,8 +127,8 @@ namespace Services.Implementations
             return Results.Ok();
         }
         
-        private static (string Hash, string Salt) CreatePasswordHashAndSalt(string password)
-        {
+    private static (string Hash, string Salt) CreatePasswordHashAndSalt(string password)
+    {
             using var hmac = new HMACSHA512();
             
             var passwordSalt = hmac.Key;
@@ -137,17 +137,16 @@ namespace Services.Implementations
             return (Convert.ToBase64String(passwordHash), Convert.ToBase64String(passwordSalt));
         }
         
-        private static bool ValidatePassword(string password, string hash, string salt)
-        {
+    private static bool ValidatePassword(string password, string hash, string salt)
+    {
             var computedHash = GenerateHash(password, salt);
             return hash.Equals(computedHash);
         }
         
-        private static string GenerateHash(string password, string salt)
-        {
+    private static string GenerateHash(string password, string salt)
+    {
             using var hmac = new HMACSHA512(Convert.FromBase64String(salt));
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             return Convert.ToBase64String(computedHash);
         }
-    }
 }

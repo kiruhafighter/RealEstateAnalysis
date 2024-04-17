@@ -1,15 +1,14 @@
-﻿namespace Services.DTOs.AgentDTOs
+﻿namespace Services.DTOs.AgentDTOs;
+
+public sealed record UpdateAgentDto
 {
-    public sealed record UpdateAgentDto
-    {
-        public string FirstName { get; set; } = default!;
+    public string FirstName { get; set; } = default!;
     
-        public string LastName { get; set; } = default!;
+    public string LastName { get; set; } = default!;
     
-        public string Email { get; set; } = default!;
+    public string Email { get; set; } = default!;
     
-        public string PhoneNumber { get; set; } = default!;
+    public string PhoneNumber { get; set; } = default!;
     
-        public string? AgencyName { get; set; }
-    }
+    public string? AgencyName { get; set; }
 }

@@ -1,11 +1,10 @@
-﻿namespace Services.Enums
+﻿namespace Services.Enums;
+
+internal enum Role
 {
-    internal enum Role
-    {
-        Admin = 1,
+    Admin = 1,
         
-        User = 2,
+    User = 2,
         
-        Agent = 3
-    }
+    Agent = 3
 }

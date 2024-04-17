@@ -1,9 +1,8 @@
 ﻿using Domain.Entities;
 
-namespace Repositories
+namespace Repositories;
+
+public interface IImageRepository : IBaseRepository<Image, int>
 {
-    public interface IImageRepository : IBaseRepository<Image, int>
-    {
         
-    }
 }

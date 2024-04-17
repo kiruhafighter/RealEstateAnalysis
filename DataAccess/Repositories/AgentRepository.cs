@@ -2,16 +2,16 @@
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 
-namespace DataAccess.Repositories
+namespace DataAccess.Repositories;
+
+internal sealed class AgentRepository : BaseRepository<Agent, Guid>, IAgentRepository
 {
-    internal sealed class AgentRepository : BaseRepository<Agent, Guid>, IAgentRepository
+    public AgentRepository(DBContext context) : base(context)
     {
-        public AgentRepository(DBContext context) : base(context)
-        {
         }
         
-        public async Task<Agent?> GetAgentByUserIdAsync(Guid userId, CancellationToken cancellationToken)
-        {
+    public async Task<Agent?> GetAgentByUserIdAsync(Guid userId, CancellationToken cancellationToken)
+    {
             return await Context.Set<Agent>()
                 .AsNoTracking()
                 .Include(a => a.Properties)
@@ -20,8 +20,8 @@ namespace DataAccess.Repositories
                     cancellationToken);
         }
         
-        public async Task<bool> AgentExistsByUserIdAsync(Guid userId, CancellationToken cancellationToken)
-        {
+    public async Task<bool> AgentExistsByUserIdAsync(Guid userId, CancellationToken cancellationToken)
+    {
             var agent = await Context.Set<Agent>()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(a => a.UserId.Equals(userId), 
@@ -30,8 +30,8 @@ namespace DataAccess.Repositories
             return agent is not null;
         }
 
-        public async Task<bool> AgentExistsByEmailAsync(string email, CancellationToken cancellationToken)
-        {
+    public async Task<bool> AgentExistsByEmailAsync(string email, CancellationToken cancellationToken)
+    {
             var agent = await Context.Set<Agent>()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(a => a.Email.Equals(email), 
@@ -40,8 +40,8 @@ namespace DataAccess.Repositories
             return agent is not null;
         }
 
-        public async Task<bool> UpdateAgentAsync(Agent agent, CancellationToken cancellationToken)
-        {
+    public async Task<bool> UpdateAgentAsync(Agent agent, CancellationToken cancellationToken)
+    {
             var updated = await Context.Set<Agent>()
                 .Where(a => a.Id.Equals(agent.Id))
                 .ExecuteUpdateAsync(s => s
@@ -53,5 +53,4 @@ namespace DataAccess.Repositories
 
             return updated > 0;
         }
-    }
 }
