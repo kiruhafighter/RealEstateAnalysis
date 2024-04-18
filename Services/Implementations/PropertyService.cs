@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Repositories;
 using Services.DTOs.PropertyDTOs;
@@ -12,12 +13,15 @@ public class PropertyService : IPropertyService
     private readonly IMapper _mapper;
     private readonly IPropertyRepository _propertyRepository;
     private readonly IAgentRepository _agentRepository;
+    private readonly IImageRepository _imageRepository;
 
-    public PropertyService(IMapper mapper, IPropertyRepository propertyRepository, IAgentRepository agentRepository)
+    public PropertyService(IMapper mapper, IPropertyRepository propertyRepository, 
+        IAgentRepository agentRepository, IImageRepository imageRepository)
     {
         _mapper = mapper;
         _propertyRepository = propertyRepository;
         _agentRepository = agentRepository;
+        _imageRepository = imageRepository;
     }
         
     public async Task<IResult> GetAgentPropertiesAsync(Guid agentId, CancellationToken cancellationToken)
@@ -34,7 +38,7 @@ public class PropertyService : IPropertyService
         
         return Results.Ok(agentPropertiesList);
     }
-        
+    
     public async Task<IResult> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var property = await _propertyRepository.GetByIdAsync(id, cancellationToken);
@@ -47,5 +51,37 @@ public class PropertyService : IPropertyService
         var propertyMapped = _mapper.Map<PropertyDetailsDto>(property);
         
         return Results.Ok(propertyMapped);
+    }
+    
+    public async Task<IResult> AddAsync(Guid userId, AddPropertyDto addPropertyInfo, CancellationToken cancellationToken)
+    {
+        var agent = await _agentRepository.GetAgentByUserIdAsync(userId, cancellationToken);
+        
+        if (agent is null)
+        {
+            return Results.BadRequest("Agent account is not found");
+        }
+        
+        var property = _mapper.Map<Property>(addPropertyInfo);
+           
+        var addedProperty = await _propertyRepository.AddAsync(property, cancellationToken);
+        
+        if (!addedProperty)
+        {
+            return Results.StatusCode(StatusCodes.Status500InternalServerError);
+        }
+        
+        var images = _mapper.Map<List<Image>>(addPropertyInfo.Images);
+        
+        images.ForEach(i => i.PropertyId = property.Id);
+        
+        var addedImages = await _imageRepository.AddRangeAsync(images, cancellationToken);
+        
+        if (!addedImages)
+        {
+            return Results.Ok("Images failed to be added");
+        }
+        
+        return Results.Ok();
     }
 }

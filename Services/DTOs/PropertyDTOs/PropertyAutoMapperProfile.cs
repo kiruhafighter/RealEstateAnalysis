@@ -20,5 +20,9 @@ internal sealed class PropertyAutoMapperProfile : Profile
                 opt => opt.MapFrom(src => src.PropertyStatus!.StatusName))
             .ForMember(dest => dest.PropertyTypeName,
                 opt => opt.MapFrom(src => src.PropertyType!.TypeName));
+        
+        CreateMap<AddPropertyDto, Property>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
+            .ForMember(dest => dest.Images, opt => opt.Ignore());
     }
 }

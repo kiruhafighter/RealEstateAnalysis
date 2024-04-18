@@ -2,7 +2,7 @@
 
 public sealed record ImageListedDto
 {
-    public Guid Id { get; init; }
+    public Guid PropertyId { get; init; }
     
     public string ImagePath { get; init; } = default!;
 }
