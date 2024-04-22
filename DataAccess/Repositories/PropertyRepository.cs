@@ -21,7 +21,18 @@ internal sealed class PropertyRepository : BaseRepository<Property, Guid>, IProp
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
-    
+
+    public async Task<bool> UpdatePropertyAsync(Property property, CancellationToken cancellationToken)
+    {
+        var entry = Context.Entry(property);
+
+        entry.State = EntityState.Modified;
+        entry.Property(p => p.AgentId).IsModified = false;
+
+        var update = await Context.SaveChangesAsync(cancellationToken);
+        return update > 0;
+    }
+
     public override async Task<Property?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var property = await Context.Set<Property>()

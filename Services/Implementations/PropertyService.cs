@@ -84,4 +84,35 @@ public class PropertyService : IPropertyService
         
         return Results.Ok();
     }
+
+    public async Task<IResult> UpdateAsync(Guid userId, UpdatePropertyDto updatePropertyInfo, CancellationToken cancellationToken)
+    {
+        var agent = await _agentRepository.GetAgentByUserIdAsync(userId, cancellationToken);
+        
+        if (agent is null)
+        {
+            return Results.BadRequest("Agent account is not found");
+        }
+
+        var propertyExisting = await _propertyRepository.GetByIdAsync(updatePropertyInfo.Id, cancellationToken);
+
+        if (propertyExisting is null)
+        {
+            return Results.NotFound("Property is not found");
+        }
+
+        if (!propertyExisting.AgentId.Equals(agent.Id))
+        {
+            return Results.Forbid();
+        }
+
+        var propertyUpdateModel = _mapper.Map<Property>(updatePropertyInfo);
+
+        if (!await _propertyRepository.UpdatePropertyAsync(propertyUpdateModel, cancellationToken))
+        {
+            return Results.StatusCode(StatusCodes.Status500InternalServerError);
+        }
+        
+        return Results.Ok();
+    }
 }
