@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
-    [DbContext(typeof(DBContext))]
+    [DbContext(typeof(RealEstateDBContext))]
     [Migration("20240414212010_Initial")]
     partial class Initial
     {

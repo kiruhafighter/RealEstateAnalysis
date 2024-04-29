@@ -23,43 +23,43 @@ public class AgentService : IAgentService
         
     public async Task<IResult> AddAgentAccountAsync(Guid userId, AddAgentDto addAgentDto, CancellationToken cancellationToken)
     {
-            if (await _agentRepository.AgentExistsByUserIdAsync(userId, cancellationToken))
-            {
-                return Results.BadRequest("Agent already exists for you");
-            }
-
-            if (await _agentRepository.AgentExistsByEmailAsync(addAgentDto.Email, cancellationToken))
-            {
-                return Results.BadRequest("Agent with such email already exists");
-            }
-
-            var agent = new Agent
-            {
-                Id = Guid.NewGuid(),
-                AgencyName = addAgentDto.AgencyName,
-                FirstName = addAgentDto.FirstName,
-                LastName = addAgentDto.LastName,
-                Email = addAgentDto.Email,
-                PhoneNumber = addAgentDto.PhoneNumber,
-                UserId = userId
-            };
-            
-            var added = await _agentRepository.AddAsync(agent, cancellationToken);
-            
-            if (!added)
-            {
-                return Results.StatusCode(StatusCodes.Status500InternalServerError);
-            }
-            
-            var updateUserRole = await _userRepository.UpdateUserRoleAsync(userId, (int)Role.Agent, cancellationToken);
-            
-            if (!updateUserRole)
-            {
-                return Results.StatusCode(StatusCodes.Status500InternalServerError);
-            }
-            
-            return Results.Ok();
+        if (await _agentRepository.AgentExistsByUserIdAsync(userId, cancellationToken))
+        {
+            return Results.BadRequest("Agent already exists for you");
         }
+
+        if (await _agentRepository.AgentExistsByEmailAsync(addAgentDto.Email, cancellationToken))
+        {
+            return Results.BadRequest("Agent with such email already exists");
+        }
+
+        var agent = new Agent
+        {
+            Id = Guid.NewGuid(),
+            AgencyName = addAgentDto.AgencyName,
+            FirstName = addAgentDto.FirstName,
+            LastName = addAgentDto.LastName,
+            Email = addAgentDto.Email,
+            PhoneNumber = addAgentDto.PhoneNumber,
+            UserId = userId
+        };
+            
+        var added = await _agentRepository.AddAsync(agent, cancellationToken);
+            
+        if (!added)
+        {
+            return Results.StatusCode(StatusCodes.Status500InternalServerError);
+        }
+            
+        var updateUserRole = await _userRepository.UpdateUserRoleAsync(userId, (int)Role.Agent, cancellationToken);
+            
+        if (!updateUserRole)
+        {
+            return Results.StatusCode(StatusCodes.Status500InternalServerError);
+        }
+            
+        return Results.Ok();
+    }
 
     public async Task<IResult> GetAgentAccountDetailsAsync(Guid id, CancellationToken cancellationToken)
     {

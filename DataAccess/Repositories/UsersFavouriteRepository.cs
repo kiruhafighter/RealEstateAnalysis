@@ -6,7 +6,29 @@ namespace DataAccess.Repositories;
 
 internal sealed class UsersFavouriteRepository : BaseRepository<UsersFavourite, int>, IUsersFavouriteRepository
 {
-    public UsersFavouriteRepository(DbContext context) : base(context)
+    public UsersFavouriteRepository(RealEstateDBContext context) : base(context)
     {
-        }
+    }
+
+    public async Task<bool> ExistsForUserAsync(Guid userId, Guid propertyId, CancellationToken cancellationToken = default)
+    {
+        return await Context.Set<UsersFavourite>()
+            .AnyAsync(uf => uf.UserId.Equals(userId) && uf.PropertyId.Equals(propertyId), cancellationToken);
+    }
+
+    public async Task<bool> RemoveForUserAsync(Guid userId, Guid propertyId, CancellationToken cancellationToken = default)
+    {
+        var deleted = await Context.Set<UsersFavourite>()
+            .Where(uf => uf.UserId.Equals(userId) && uf.PropertyId.Equals(propertyId))
+            .ExecuteDeleteAsync(cancellationToken);
+        
+        return deleted > 0;
+    }
+
+    public async Task<IList<UsersFavourite>> GetForUserAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        return await Context.Set<UsersFavourite>()
+            .Where(uf => uf.UserId.Equals(userId))
+            .ToListAsync(cancellationToken);
+    }
 }

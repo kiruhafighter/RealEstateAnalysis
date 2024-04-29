@@ -6,7 +6,7 @@ namespace DataAccess.Repositories;
 
 internal sealed class UserRepository : BaseRepository<User, Guid>, IUserRepository
 {
-    public UserRepository(DbContext context) : base(context)
+    public UserRepository(RealEstateDBContext context) : base(context)
     {
         }
 

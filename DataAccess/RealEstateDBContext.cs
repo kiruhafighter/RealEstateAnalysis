@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess;
 
-internal sealed class DBContext : DbContext
+internal sealed class RealEstateDBContext : DbContext
 {
-    public DBContext(DbContextOptions<DBContext> options) : base(options)
+    public RealEstateDBContext(DbContextOptions<RealEstateDBContext> options) : base(options)
     {
         
     }
@@ -32,6 +32,6 @@ internal sealed class DBContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(DBContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(RealEstateDBContext).Assembly);
     }
 }

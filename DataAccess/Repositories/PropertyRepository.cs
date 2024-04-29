@@ -7,7 +7,7 @@ namespace DataAccess.Repositories;
 
 internal sealed class PropertyRepository : BaseRepository<Property, Guid>, IPropertyRepository
 {
-    public PropertyRepository(DbContext context) : base(context)
+    public PropertyRepository(RealEstateDBContext context) : base(context)
     {
     }
     
@@ -36,6 +36,8 @@ internal sealed class PropertyRepository : BaseRepository<Property, Guid>, IProp
     public override async Task<Property?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var property = await Context.Set<Property>()
+            .Include(p => p.Agent)
+                .ThenInclude(a => a!.User)
             .Include(p => p.PropertyType)
             .Include(p => p.PropertyStatus)
             .Include(p => p.Images)

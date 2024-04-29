@@ -53,7 +53,7 @@ public class PropertyService : IPropertyService
         return Results.Ok(propertyMapped);
     }
     
-    public async Task<IResult> AddAsync(Guid userId, AddPropertyDto addPropertyInfo, CancellationToken cancellationToken)
+    public async Task<IResult> AddPropertyAsync(Guid userId, AddPropertyDto addPropertyInfo, CancellationToken cancellationToken)
     {
         var agent = await _agentRepository.GetAgentByUserIdAsync(userId, cancellationToken);
         

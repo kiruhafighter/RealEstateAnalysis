@@ -13,7 +13,7 @@ public static class DataAccessServicesRegistration
     public static IServiceCollection AddDataAccessServices(this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddDbContext<DBContext>((serviceProvider, builder) =>
+        services.AddDbContext<RealEstateDBContext>((serviceProvider, builder) =>
         {
             builder.UseSqlServer(configuration.GetConnectionString(DBConnectionStringKey));
         });
