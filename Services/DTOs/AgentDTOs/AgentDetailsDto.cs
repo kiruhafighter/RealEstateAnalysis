@@ -13,4 +13,6 @@ public sealed record AgentDetailsDto
     public string PhoneNumber { get; init; } = default!;
     
     public string? AgencyName { get; init; }
+    
+    public Guid UserId { get; init; }
 }

@@ -6,7 +6,7 @@ namespace Services.DTOs.UserDTOs;
 internal sealed class UserAutoMapperProfile : Profile
 {
     public UserAutoMapperProfile()
-    {
-            CreateMap<User, UserDetailsDto>();
-        }
+    { 
+        CreateMap<User, UserDetailsDto>();
+    }
 }

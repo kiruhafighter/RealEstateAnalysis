@@ -63,64 +63,64 @@ public class AgentService : IAgentService
 
     public async Task<IResult> GetAgentAccountDetailsAsync(Guid id, CancellationToken cancellationToken)
     {
-            var agent = await _agentRepository.GetByIdAsync(id, cancellationToken);
+        var agent = await _agentRepository.GetByIdAsync(id, cancellationToken);
             
-            if (agent is null)
-            {
-                Results.NotFound("Agent is not found");
-            }
-            
-            var agentDetails = _mapper.Map<AgentDetailsDto>(agent);
-            
-            return Results.Ok(agentDetails);
+        if (agent is null)
+        {
+            Results.NotFound("Agent is not found");
         }
+            
+        var agentDetails = _mapper.Map<AgentDetailsDto>(agent);
+            
+        return Results.Ok(agentDetails);
+    }
         
     public async Task<IResult> GetAgentByUserIdAsync(Guid userId, CancellationToken cancellationToken)
     {
-            var agent = await _agentRepository.GetAgentByUserIdAsync(userId, cancellationToken);
+        var agent = await _agentRepository.GetAgentByUserIdAsync(userId, cancellationToken);
             
-            if (agent is null)
-            {
-                Results.NotFound("Agent is not found");
-            }
-            
-            var agentDetails = _mapper.Map<AgentDetailsDto>(agent);
-            
-            return Results.Ok(agentDetails);
+        if (agent is null)
+        {
+            Results.NotFound("Agent is not found");
         }
+            
+        var agentDetails = _mapper.Map<AgentDetailsDto>(agent);
+            
+        return Results.Ok(agentDetails);
+    }
         
     public async Task<IResult> UpdateAgentInfoAsync(Guid userId, UpdateAgentDto updateInfo, CancellationToken cancellationToken)
     {
-            var agent = await _agentRepository.GetAgentByUserIdAsync(userId, cancellationToken);
+        var agent = await _agentRepository.GetAgentByUserIdAsync(userId, cancellationToken);
             
-            if (agent is null)
-            {
-                Results.NotFound("Agent is not found");
-            }
-
-            if (!agent!.Email.Equals(updateInfo.Email) &&
-                !await _agentRepository.AgentExistsByEmailAsync(updateInfo.Email, cancellationToken))
-            {
-                return Results.BadRequest("Agent with such email already exists");
-            }
-
-            var agentUpdated = new Agent
-            {
-                Id = agent.Id,
-                Email = updateInfo.Email,
-                FirstName = updateInfo.FirstName,
-                LastName = updateInfo.LastName,
-                AgencyName = updateInfo.AgencyName,
-                PhoneNumber = updateInfo.PhoneNumber
-            };
-
-            var updateSucceeded = await _agentRepository.UpdateAgentAsync(agentUpdated, cancellationToken);
-
-            if (!updateSucceeded)
-            {
-                return Results.StatusCode(StatusCodes.Status500InternalServerError);
-            }
-            
-            return Results.Ok();
+        if (agent is null)
+        {
+            Results.NotFound("Agent is not found");
         }
+
+        if (!agent!.Email.Equals(updateInfo.Email) &&
+            !await _agentRepository.AgentExistsByEmailAsync(updateInfo.Email, cancellationToken))
+        {
+            return Results.BadRequest("Agent with such email already exists");
+        }
+
+        var agentUpdated = new Agent
+        {
+            Id = agent.Id,
+            Email = updateInfo.Email,
+            FirstName = updateInfo.FirstName,
+            LastName = updateInfo.LastName,
+            AgencyName = updateInfo.AgencyName,
+            PhoneNumber = updateInfo.PhoneNumber
+        };
+
+        var updateSucceeded = await _agentRepository.UpdateAgentAsync(agentUpdated, cancellationToken);
+
+        if (!updateSucceeded)
+        {
+            return Results.StatusCode(StatusCodes.Status500InternalServerError);
+        }
+            
+        return Results.Ok();
+    }
 }

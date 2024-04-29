@@ -34,7 +34,5 @@ public sealed record AddPropertyDto
     
     public int PropertyStatusId { get; init; }
     
-    public Guid AgentId { get; init; }
-    
     public List<AddImageDto> Images { get; init; } = [];
 }

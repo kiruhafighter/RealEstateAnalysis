@@ -63,6 +63,7 @@ public class PropertyService : IPropertyService
         }
         
         var property = _mapper.Map<Property>(addPropertyInfo);
+        property.AgentId = agent.Id;
            
         var addedProperty = await _propertyRepository.AddAsync(property, cancellationToken);
         
