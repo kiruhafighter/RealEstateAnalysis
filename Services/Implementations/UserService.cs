@@ -19,7 +19,7 @@ public class UserService : IUserService
     private readonly JWTOptions _jwtOptions;
     private readonly IMapper _mapper;
 
-    public UserService(IUserRepository userRepository, 
+    public UserService(IUserRepository userRepository,
         IOptions<JWTOptions> jwtOptions, 
         IMapper mapper)
     {

@@ -16,6 +16,11 @@ public static class BLLServicesRegistration
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAgentService, AgentService>();
+            services.AddScoped<IPropertyService, PropertyService>();
+            services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<IOfferService, OfferService>();
+            services.AddScoped<IUsersFavouriteService, UsersFavouriteService>();
 
             return services;
         }
