@@ -5,6 +5,8 @@
         internal const string Users = "users";
 
         internal const string Agents = "agents";
+
+        internal const string Properties = "properties";
         
         internal const string Register = "register";
         

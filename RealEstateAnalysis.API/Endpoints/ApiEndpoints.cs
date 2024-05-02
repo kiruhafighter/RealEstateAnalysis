@@ -6,6 +6,7 @@
         {
             app.AddUserEndpoints();
             app.AddAgentEndpoints();
+            app.AddPropertyEndpoints();
             
             return app;
         }
