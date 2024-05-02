@@ -3,6 +3,8 @@
     internal struct RouteNameConstants
     {
         internal const string Users = "users";
+
+        internal const string Agents = "agents";
         
         internal const string Register = "register";
         

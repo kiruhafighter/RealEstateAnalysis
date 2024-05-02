@@ -16,14 +16,14 @@ public class AgentService : IAgentService
 
     public AgentService(IAgentRepository agentRepository, IUserRepository userRepository, IMapper mapper)
     {
-            _agentRepository = agentRepository;
-            _userRepository = userRepository;
-            _mapper = mapper;
-        }
+        _agentRepository = agentRepository;
+        _userRepository = userRepository;
+        _mapper = mapper;
+    }
         
     public async Task<IResult> AddAgentAccountAsync(Guid userId, AddAgentDto addAgentDto, CancellationToken cancellationToken)
-    {
-        if (await _agentRepository.AgentExistsByUserIdAsync(userId, cancellationToken))
+    { 
+        if (await _agentRepository.AgentExistsByUserIdAsync(userId, cancellationToken)) 
         {
             return Results.BadRequest("Agent already exists for you");
         }
