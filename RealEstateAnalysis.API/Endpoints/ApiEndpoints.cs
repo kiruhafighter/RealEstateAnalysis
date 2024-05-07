@@ -7,6 +7,7 @@
             app.AddUserEndpoints();
             app.AddAgentEndpoints();
             app.AddPropertyEndpoints();
+            app.AddOfferEndpoints();
             
             return app;
         }
