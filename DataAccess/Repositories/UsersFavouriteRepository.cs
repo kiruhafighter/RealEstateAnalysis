@@ -29,6 +29,7 @@ internal sealed class UsersFavouriteRepository : BaseRepository<UsersFavourite, 
     {
         return await Context.Set<UsersFavourite>()
             .Where(uf => uf.UserId.Equals(userId))
+            .Include(uf => uf.Property)
             .ToListAsync(cancellationToken);
     }
 }
