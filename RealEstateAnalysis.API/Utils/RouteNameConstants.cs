@@ -7,6 +7,8 @@
         internal const string Agents = "agents";
 
         internal const string Properties = "properties";
+
+        internal const string Images = "images";
         
         internal const string Register = "register";
         
