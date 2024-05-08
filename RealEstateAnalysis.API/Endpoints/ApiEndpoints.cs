@@ -9,6 +9,7 @@
             app.AddPropertyEndpoints();
             app.AddOfferEndpoints();
             app.AddImageEndpoints();
+            app.AddUsersFavouriteEndpoints();
             
             return app;
         }
