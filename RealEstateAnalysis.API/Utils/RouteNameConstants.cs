@@ -23,5 +23,7 @@
         internal const string Accept = "accept";
         
         internal const string Reject = "reject";
+        
+        internal const string UserFavourites = "favourites";
     }
 }

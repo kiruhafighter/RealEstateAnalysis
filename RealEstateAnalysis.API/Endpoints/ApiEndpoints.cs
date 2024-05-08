@@ -8,6 +8,7 @@
             app.AddAgentEndpoints();
             app.AddPropertyEndpoints();
             app.AddOfferEndpoints();
+            app.AddImageEndpoints();
             
             return app;
         }
