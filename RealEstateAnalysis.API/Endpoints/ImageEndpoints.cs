@@ -11,7 +11,7 @@ internal static class ImageEndpoints
     {
         webApplication.MapPost($"/{RouteNameConstants.Properties}/{{propertyId}}/{RouteNameConstants.Images}",
                 AddImageForProperty)
-            .RequireAuthorization()
+            .RequireRole("Agent")
             .Produces(StatusCodes.Status200OK)
             .Produces<string>(StatusCodes.Status404NotFound)
             .Produces<string>(StatusCodes.Status400BadRequest)
@@ -24,7 +24,7 @@ internal static class ImageEndpoints
         
         webApplication.MapDelete($"/{RouteNameConstants.Properties}/{{propertyId}}/{RouteNameConstants.Images}/{{imageId}}",
                 DeleteImageForProperty)
-            .RequireAuthorization()
+            .RequireRole("Agent")
             .Produces(StatusCodes.Status200OK)
             .Produces<string>(StatusCodes.Status404NotFound)
             .Produces<string>(StatusCodes.Status400BadRequest)

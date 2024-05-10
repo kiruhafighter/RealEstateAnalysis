@@ -11,7 +11,7 @@ public static class AgentEndpoints
     {
         webApplication.MapGet($"/{RouteNameConstants.Agents}/{RouteNameConstants.MyProfile}",
                 GetAgentProfileForUser)
-            .RequireAuthorization()
+            .RequireRole("Agent")
             .Produces<AgentDetailsDto>()
             .Produces<string>(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status401Unauthorized)
@@ -40,7 +40,7 @@ public static class AgentEndpoints
         
         webApplication.MapPut($"/{RouteNameConstants.Agents}/{RouteNameConstants.MyProfile}",
             UpdateAgentInfoForUser)
-            .RequireAuthorization()
+            .RequireRole("Agent")
             .Produces(StatusCodes.Status200OK)
             .Produces<string>(StatusCodes.Status400BadRequest)
             .Produces<string>(StatusCodes.Status404NotFound)

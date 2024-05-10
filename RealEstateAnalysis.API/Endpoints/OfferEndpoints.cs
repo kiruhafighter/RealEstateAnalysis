@@ -40,7 +40,7 @@ internal static class OfferEndpoints
             
         webApplication.MapGet($"/{RouteNameConstants.Properties}/{{propertyId}}/{RouteNameConstants.Offers}",
                 GetOffersByPropertyId)
-            .RequireAuthorization()
+            .RequireRole("Agent")
             .Produces<List<OfferListedDto>>()
             .Produces<string>(StatusCodes.Status404NotFound)
             .Produces<string>(StatusCodes.Status400BadRequest)
@@ -83,7 +83,7 @@ internal static class OfferEndpoints
         
         webApplication.MapPatch($"/{RouteNameConstants.Offers}/{{offerId}}/{RouteNameConstants.Accept}",
                 AcceptOffer)
-            .RequireAuthorization()
+            .RequireRole("Agent")
             .Produces(StatusCodes.Status200OK)
             .Produces<string>(StatusCodes.Status404NotFound)
             .Produces<string>(StatusCodes.Status400BadRequest)
@@ -95,7 +95,7 @@ internal static class OfferEndpoints
         
         webApplication.MapPatch($"/{RouteNameConstants.Offers}/{{offerId}}/{RouteNameConstants.Reject}",
                 RejectOffer)
-            .RequireAuthorization()
+            .RequireRole("Agent")
             .Produces(StatusCodes.Status200OK)
             .Produces<string>(StatusCodes.Status404NotFound)
             .Produces<string>(StatusCodes.Status400BadRequest)

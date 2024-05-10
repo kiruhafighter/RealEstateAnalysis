@@ -28,7 +28,7 @@ public static class PropertyEndpoints
             .WithOpenApi();
         
         webApplication.MapPost($"/{RouteNameConstants.Properties}", AddProperty)
-            .RequireAuthorization()
+            .RequireRole("Agent")
             .Produces(StatusCodes.Status200OK)
             .Produces<string>(StatusCodes.Status400BadRequest)
             .Produces<int>(StatusCodes.Status500InternalServerError)
@@ -38,7 +38,7 @@ public static class PropertyEndpoints
             .WithOpenApi();
         
         webApplication.MapPut($"/{RouteNameConstants.Properties}", UpdateProperty)
-            .RequireAuthorization()
+            .RequireRole("Agent")
             .Produces(StatusCodes.Status200OK)
             .Produces<string>(StatusCodes.Status400BadRequest)
             .Produces<string>(StatusCodes.Status404NotFound)

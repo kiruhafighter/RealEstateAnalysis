@@ -15,4 +15,13 @@ public static class AuthorizationExtensions
             
         return services;
     }
+    
+    public static RouteHandlerBuilder RequireRole(this RouteHandlerBuilder builder, string role)
+    {
+        builder.RequireAuthorization(new AuthorizationPolicyBuilder()
+            .RequireRole(role)
+            .Build());
+        
+        return builder;
+    }
 }
