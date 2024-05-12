@@ -30,7 +30,7 @@ namespace Services.ExpressionFilters
             }
             
             return pr =>
-                pr.Name.Contains(address.Trim());
+                pr.Address.Contains(address.Trim());
         }
         
         internal static Expression<Func<Property, bool>> FilterByCounty(string? county)

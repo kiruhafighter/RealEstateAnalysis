@@ -62,7 +62,7 @@ public static class PropertyEndpoints
     }
     
     private static async Task<IResult> GetPropertiesFiltered([FromServices] IPropertyService propertyService,
-        [FromQuery] FilterPropertiesRequest filterRequest, CancellationToken cancellationToken)
+        [AsParameters] FilterPropertiesRequest filterRequest, CancellationToken cancellationToken)
     {
         return await propertyService.GetPropertiesFilteredAsync(filterRequest, cancellationToken);
     }
