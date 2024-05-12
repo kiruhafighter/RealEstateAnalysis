@@ -33,6 +33,28 @@ internal sealed class PropertyRepository : BaseRepository<Property, Guid>, IProp
         return update > 0;
     }
 
+    public async Task<(int, IList<Property>)> GetManyPagedAsync(int page, int pageSize, Expression<Func<Property, bool>> where, CancellationToken cancellationToken)
+    {
+        int totalCount = await Context.Set<Property>()
+            .Where(where)
+            .AsNoTracking()
+            .CountAsync(cancellationToken);
+
+        var properties = await Context.Set<Property>()
+            .Where(where)
+            .Include(p => p.Agent)
+                .ThenInclude(a => a!.User)
+            .Include(p => p.PropertyType)
+            .Include(p => p.PropertyStatus)
+            .Include(p => p.Images)
+            .AsNoTracking()
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return (totalCount, properties);
+    }
+
     public override async Task<Property?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var property = await Context.Set<Property>()

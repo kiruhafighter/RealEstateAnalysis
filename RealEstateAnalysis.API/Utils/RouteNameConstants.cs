@@ -25,5 +25,7 @@
         internal const string Reject = "reject";
         
         internal const string UserFavourites = "favourites";
+
+        internal const string Filter = "filter";
     }
 }

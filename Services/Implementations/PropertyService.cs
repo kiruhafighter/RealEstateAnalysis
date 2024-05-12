@@ -2,8 +2,10 @@
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Repositories;
+using Services.DTOs;
 using Services.DTOs.PropertyDTOs;
 using Services.ExpressionFilters;
+using Services.Extensions;
 using Services.IServices;
 
 namespace Services.Implementations;
@@ -23,7 +25,35 @@ public class PropertyService : IPropertyService
         _agentRepository = agentRepository;
         _imageRepository = imageRepository;
     }
+
+    public async Task<IResult> GetPropertiesFilteredAsync(FilterPropertiesRequest filterRequest, CancellationToken cancellationToken)
+    {
+        var (totalCount, properties) = await _propertyRepository.GetManyPagedAsync(filterRequest.PageNumber,
+            filterRequest.PageSize,
+            ExpressionExtensions.CombineExpressions(
+                PropertyExpressionFilters.FilterByName(filterRequest.Name),
+                PropertyExpressionFilters.FilterByAddress(filterRequest.Address),
+                PropertyExpressionFilters.FilterByCounty(filterRequest.County),
+                PropertyExpressionFilters.FilterByCountry(filterRequest.Country),
+                PropertyExpressionFilters.FilterByLocality(filterRequest.Locality),
+                PropertyExpressionFilters.FilterByNumberOfRooms(filterRequest.NumberOfRooms),
+                PropertyExpressionFilters.FilterByNumberOfFloors(filterRequest.NumberOfFloors),
+                PropertyExpressionFilters.FilterByPropertyTypeId(filterRequest.PropertyTypeId),
+                PropertyExpressionFilters.FilterByYearBuilt(filterRequest.MinYearBuilt, filterRequest.MaxYearBuilt),
+                PropertyExpressionFilters.FilterByPlotArea(filterRequest.MinPlotArea, filterRequest.MaxPlotArea),
+                PropertyExpressionFilters.FilterByFloorArea(filterRequest.MinFloorArea, filterRequest.MaxFloorArea),
+                PropertyExpressionFilters.FilterByPrice(filterRequest.MinPrice, filterRequest.MaxPrice)),
+            cancellationToken);
         
+        var propertiesList = _mapper.Map<List<PropertyListedDto>>(properties);
+        
+        return Results.Ok(new CollectionResult<PropertyListedDto>
+        {
+            Data = propertiesList,
+            TotalCount = totalCount
+        });
+    }
+
     public async Task<IResult> GetAgentPropertiesAsync(Guid agentId, CancellationToken cancellationToken)
     {
         if (!await _agentRepository.ExistsAsync(agentId, cancellationToken))

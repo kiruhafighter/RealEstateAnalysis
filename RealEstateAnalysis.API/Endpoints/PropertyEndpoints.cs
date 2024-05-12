@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RealEstateAnalysis.Utils;
+using Services.DTOs;
 using Services.DTOs.PropertyDTOs;
 using Services.IServices;
 
@@ -9,6 +10,14 @@ public static class PropertyEndpoints
 {
     public static WebApplication AddPropertyEndpoints(this WebApplication webApplication)
     {
+        webApplication.MapGet($"/{RouteNameConstants.Properties}/{RouteNameConstants.Filter}",
+                GetPropertiesFiltered)
+            .AllowAnonymous()
+            .Produces<CollectionResult<PropertyListedDto>>()
+            .WithTags(nameof(PropertyEndpoints))
+            .WithName(nameof(GetPropertiesFiltered))
+            .WithOpenApi();
+        
         webApplication.MapGet($"/{RouteNameConstants.Properties}/{{propertyId}}",
                 GetPropertyDetails)
             .AllowAnonymous()
@@ -48,8 +57,14 @@ public static class PropertyEndpoints
             .WithTags(nameof(PropertyEndpoints))
             .WithName(nameof(UpdateProperty))
             .WithOpenApi();
-
+        
         return webApplication;
+    }
+    
+    private static async Task<IResult> GetPropertiesFiltered([FromServices] IPropertyService propertyService,
+        [FromQuery] FilterPropertiesRequest filterRequest, CancellationToken cancellationToken)
+    {
+        return await propertyService.GetPropertiesFilteredAsync(filterRequest, cancellationToken);
     }
     
     private static async Task<IResult> GetPropertyDetails([FromServices] IPropertyService propertyService,
