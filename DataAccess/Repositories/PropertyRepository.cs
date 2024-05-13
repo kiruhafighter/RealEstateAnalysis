@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Domain.Entities;
+using Domain.SpecialData;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 
@@ -53,6 +54,28 @@ internal sealed class PropertyRepository : BaseRepository<Property, Guid>, IProp
             .ToListAsync(cancellationToken);
 
         return (totalCount, properties);
+    }
+
+    public async Task<IList<AveragePriceForMonth>> GetAveragePriceForTimePeriodAsync(DateTime startDate, DateTime endDate, CancellationToken cancellationToken)
+    {
+        var averagePricesForMonths = await Context.Set<Property>()
+            .TemporalBetween(startDate, endDate)
+            .Select(p => new
+            {
+                p.Id,
+                p.Price,
+                ValidFrom = EF.Property<DateTime>(p, "ValidFrom"),
+                ValidTo = EF.Property<DateTime>(p, "ValidTo")
+            }) 
+            .GroupBy(p => new
+            {
+                p.Id,
+                p.ValidFrom.Month,
+                p.ValidFrom.Year
+            })
+            .ToListAsync(cancellationToken);
+
+        throw new NotImplementedException();
     }
 
     public override async Task<Property?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
