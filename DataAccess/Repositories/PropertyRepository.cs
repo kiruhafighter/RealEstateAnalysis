@@ -58,6 +58,8 @@ internal sealed class PropertyRepository : BaseRepository<Property, Guid>, IProp
 
     public async Task<IList<AveragePriceForMonth>> GetAveragePriceForTimePeriodAsync(DateTime startDate, DateTime endDate, CancellationToken cancellationToken)
     {
+        int months = (endDate.Year - startDate.Year) * 12 + endDate.Month - startDate.Month + 1;
+        
         var averagePricesForMonths = await Context.Set<Property>()
             .TemporalBetween(startDate, endDate)
             .Select(p => new
@@ -67,13 +69,20 @@ internal sealed class PropertyRepository : BaseRepository<Property, Guid>, IProp
                 ValidFrom = EF.Property<DateTime>(p, "ValidFrom"),
                 ValidTo = EF.Property<DateTime>(p, "ValidTo")
             }) 
-            .GroupBy(p => new
-            {
-                p.Id,
-                p.ValidFrom.Month,
-                p.ValidFrom.Year
-            })
-            .ToListAsync(cancellationToken);
+            .SelectMany(p => Enumerable.Range(0, months)
+                            .Where(offset => 
+                                startDate.AddMonths(offset) >= p.ValidFrom &&
+                                startDate.AddMonths(offset) <= p.ValidTo)
+                            .Select(offset => new
+                            {
+                                p.Id,
+                                startDate.AddMonths(offset).Year,
+                                startDate.AddMonths(offset).Month,
+                                p.Price,
+                                p.ValidFrom,
+                                p.ValidTo
+                            }))
+            .Where
 
         throw new NotImplementedException();
     }
