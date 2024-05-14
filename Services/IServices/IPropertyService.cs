@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Services.DTOs;
 using Services.DTOs.PropertyDTOs;
 
 namespace Services.IServices;
@@ -14,4 +15,6 @@ public interface IPropertyService
     Task<IResult> AddPropertyAsync(Guid userId, AddPropertyDto addPropertyInfo, CancellationToken cancellationToken);
 
     Task<IResult> UpdateAsync(Guid userId, UpdatePropertyDto updatePropertyInfo, CancellationToken cancellationToken);
+
+    Task<IResult> GetAveragePricesForTimePeriodAsync(GetAveragePricesSampleRequest request, CancellationToken cancellationToken);
 }

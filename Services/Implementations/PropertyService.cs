@@ -146,4 +146,29 @@ public class PropertyService : IPropertyService
         
         return Results.Ok();
     }
+
+    public async Task<IResult> GetAveragePricesForTimePeriodAsync(GetAveragePricesSampleRequest request, CancellationToken cancellationToken)
+    {
+        var periodStart = new DateTime(request.StartYear, request.StartMonth, 1);
+        
+        var periodEnd = new DateTime(request.EndYear, request.EndMonth + 1, 1).AddDays(-1);
+        
+        var averagePrices = await _propertyRepository.GetAveragePriceForTimePeriodAsync(
+            ExpressionExtensions.CombineExpressions(
+                PropertyExpressionFilters.FilterByName(request.Name),
+                PropertyExpressionFilters.FilterByAddress(request.Address),
+                PropertyExpressionFilters.FilterByCounty(request.County),
+                PropertyExpressionFilters.FilterByCountry(request.Country),
+                PropertyExpressionFilters.FilterByLocality(request.Locality),
+                PropertyExpressionFilters.FilterByNumberOfRooms(request.NumberOfRooms),
+                PropertyExpressionFilters.FilterByNumberOfFloors(request.NumberOfFloors),
+                PropertyExpressionFilters.FilterByPropertyTypeId(request.PropertyTypeId),
+                PropertyExpressionFilters.FilterByYearBuilt(request.MinYearBuilt, request.MaxYearBuilt),
+                PropertyExpressionFilters.FilterByPlotArea(request.MinPlotArea, request.MaxPlotArea),
+                PropertyExpressionFilters.FilterByFloorArea(request.MinFloorArea, request.MaxFloorArea),
+                PropertyExpressionFilters.FilterByPrice(request.MinPrice, request.MaxPrice)),
+            periodStart, periodEnd, cancellationToken);
+        
+        return Results.Ok(averagePrices);
+    }
 }

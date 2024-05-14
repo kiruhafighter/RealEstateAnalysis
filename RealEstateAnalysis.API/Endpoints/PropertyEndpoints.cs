@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain.SpecialData;
+using Microsoft.AspNetCore.Mvc;
 using RealEstateAnalysis.Utils;
 using Services.DTOs;
 using Services.DTOs.PropertyDTOs;
@@ -57,6 +58,14 @@ public static class PropertyEndpoints
             .WithTags(nameof(PropertyEndpoints))
             .WithName(nameof(UpdateProperty))
             .WithOpenApi();
+
+        webApplication.MapGet($"/{RouteNameConstants.Properties}/{RouteNameConstants.AveragePrices}",
+                GetAveragePricesForPeriod)
+            .AllowAnonymous()
+            .Produces<List<AveragePriceForMonth>>()
+            .WithTags(nameof(PropertyEndpoints))
+            .WithName(nameof(GetAveragePricesForPeriod))
+            .WithOpenApi();
         
         return webApplication;
     }
@@ -101,5 +110,12 @@ public static class PropertyEndpoints
         }
         
         return await propertyService.UpdateAsync(userId, updatePropertyDto, cancellationToken);
+    }
+    
+    private static async Task<IResult> GetAveragePricesForPeriod([FromServices] IPropertyService propertyService,
+        [AsParameters] GetAveragePricesSampleRequest request,
+        CancellationToken cancellationToken)
+    {
+        return await propertyService.GetAveragePricesForTimePeriodAsync(request, cancellationToken);
     }
 }

@@ -13,6 +13,6 @@ public interface IPropertyRepository : IBaseRepository<Property, Guid>
     Task<(int, IList<Property>)> GetManyPagedAsync(int page, int pageSize, Expression<Func<Property, bool>> where,
         CancellationToken cancellationToken);
     
-    Task<IList<AveragePriceForMonth>> GetAveragePriceForTimePeriodAsync(DateTime startDate, DateTime endDate,
-        CancellationToken cancellationToken);
+    Task<IList<AveragePriceForMonth>> GetAveragePriceForTimePeriodAsync(Expression<Func<Property, bool>> where,
+        DateTime startDate, DateTime endDate, CancellationToken cancellationToken);
 }

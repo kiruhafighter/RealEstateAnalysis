@@ -56,12 +56,13 @@ internal sealed class PropertyRepository : BaseRepository<Property, Guid>, IProp
         return (totalCount, properties);
     }
 
-    public async Task<IList<AveragePriceForMonth>> GetAveragePriceForTimePeriodAsync(DateTime startDate, DateTime endDate, CancellationToken cancellationToken)
+    public async Task<IList<AveragePriceForMonth>> GetAveragePriceForTimePeriodAsync(Expression<Func<Property, bool>> where, DateTime startDate, DateTime endDate, CancellationToken cancellationToken)
     {
         int months = (endDate.Year - startDate.Year) * 12 + endDate.Month - startDate.Month + 1;
         
         var averagePricesForMonths = await Context.Set<Property>()
             .TemporalBetween(startDate, endDate)
+            .Where(where)
             .Select(p => new
             {
                 p.Id,
@@ -82,9 +83,32 @@ internal sealed class PropertyRepository : BaseRepository<Property, Guid>, IProp
                                 p.ValidFrom,
                                 p.ValidTo
                             }))
-            .Where
-
-        throw new NotImplementedException();
+            .GroupBy(p => new
+            {
+                p.Id,
+                p.Year,
+                p.Month
+            })
+            .Select(g => new
+            {
+                g.Key.Year,
+                g.Key.Month,
+                AveragePrice = g.Average(p => p.Price)
+            })
+            .GroupBy(p => new
+            {
+                p.Year,
+                p.Month
+            })
+            .Select(g => new AveragePriceForMonth
+            {
+                Year = g.Key.Year,
+                Month = g.Key.Month - 1,
+                AveragePrice = g.Average(p => p.AveragePrice)
+            })
+            .ToListAsync(cancellationToken);
+        
+        return averagePricesForMonths;
     }
 
     public override async Task<Property?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
