@@ -153,6 +153,13 @@ public class PropertyService : IPropertyService
         
         var periodEnd = new DateTime(request.EndYear, request.EndMonth + 1, 1).AddDays(-1);
         
+        if (periodStart > periodEnd ||
+            (request.EndMonth > DateTime.Now.Month
+             || request.EndYear >= DateTime.Now.Year))
+        {
+            return Results.BadRequest("Invalid time period");
+        }
+        
         var averagePrices = await _propertyRepository.GetAveragePriceForTimePeriodAsync(
             ExpressionExtensions.CombineExpressions(
                 PropertyExpressionFilters.FilterByName(request.Name),

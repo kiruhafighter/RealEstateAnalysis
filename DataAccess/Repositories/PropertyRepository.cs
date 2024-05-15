@@ -72,9 +72,9 @@ internal sealed class PropertyRepository : BaseRepository<Property, Guid>, IProp
             }) 
             .SelectMany(p => Enumerable.Range(0, months)
                             .Where(offset => 
-                                startDate.AddMonths(offset) >= p.ValidFrom &&
+                                startDate.AddMonths(offset + 1).AddDays(-1) >= p.ValidFrom &&
                                 startDate.AddMonths(offset) <= p.ValidTo)
-                            .Select(offset => new
+                            .Select(offset => new 
                             {
                                 p.Id,
                                 startDate.AddMonths(offset).Year,
@@ -103,7 +103,7 @@ internal sealed class PropertyRepository : BaseRepository<Property, Guid>, IProp
             .Select(g => new AveragePriceForMonth
             {
                 Year = g.Key.Year,
-                Month = g.Key.Month - 1,
+                Month = g.Key.Month,
                 AveragePrice = g.Average(p => p.AveragePrice)
             })
             .ToListAsync(cancellationToken);
