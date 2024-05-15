@@ -152,10 +152,10 @@ public class PropertyService : IPropertyService
         var periodStart = new DateTime(request.StartYear, request.StartMonth, 1);
         
         var periodEnd = new DateTime(request.EndYear, request.EndMonth + 1, 1).AddDays(-1);
+
+        var currentMonthLastDay = new DateTime(DateTime.Now.Year, DateTime.Now.Month + 1, 1).AddDays(-1);
         
-        if (periodStart > periodEnd ||
-            (request.EndMonth > DateTime.Now.Month
-             || request.EndYear >= DateTime.Now.Year))
+        if (periodStart > periodEnd || periodEnd > currentMonthLastDay)
         {
             return Results.BadRequest("Invalid time period");
         }
