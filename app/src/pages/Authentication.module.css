@@ -1,0 +1,24 @@
+.box{
+  width: 1212px;
+  margin: 60px auto;
+  min-height: 73vh;
+  display: flex;
+  gap: 188px;
+  align-items: center;
+}
+
+.imgDiv,
+.imgDiv img{
+width: 512px;
+height: 550px;
+}
+
+@media screen and (max-width: 1259px) {
+  .imgDiv{
+    display: none;
+  }
+
+  .box{
+    width: fit-content;
+  }
+}

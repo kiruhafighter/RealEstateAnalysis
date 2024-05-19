@@ -1,0 +1,45 @@
+
+
+.box{
+    height: 504px;
+    width: 232px;
+}
+
+.box a,
+.box a:hover,
+.box a:active{
+    text-decoration: none;
+    background-color: white;
+    color: black;
+}
+
+img{
+    width: 232px;
+    height: 329px;
+}
+
+.header {
+    height: 79px;
+    margin-bottom: 40px;
+}
+
+.header h1,
+.header .price{
+    font-size: 20px;
+    padding-top: 10px;
+}
+
+.header .price{
+    float: right;
+    color: #B69454;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 1701px) {
+    .box{
+    margin: 15px;
+}
+ }
+
+
+
