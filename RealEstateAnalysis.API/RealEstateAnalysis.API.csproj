@@ -37,4 +37,8 @@
       <ProjectReference Include="..\Services\Services.csproj" />
     </ItemGroup>
 
+    <Target Name="NSwag" AfterTargets="Build">
+        <Exec Command="$(NSwagExe_Net80) run nswag.json /variables:Configuration=$(Configuration)" />
+    </Target>
+
 </Project>
