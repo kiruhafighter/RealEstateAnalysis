@@ -3,7 +3,7 @@
   "defaultVariables": null,
   "documentGenerator": {
     "aspNetCoreToOpenApi": {
-      "project": "RealEstateAnalysis.API/RealEstateAnalysis.API.csproj",
+      "project": "RealEstateAnalysis.API.csproj",
       "documentName": "v1",
       "msBuildProjectExtensionsPath": null,
       "configuration": null,
