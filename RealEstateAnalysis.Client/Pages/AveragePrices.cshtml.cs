@@ -79,7 +79,19 @@ public class AveragePricesModel : PageModel
 
     private void PopulateDropdowns()
     {
-        PropertyTypes = new SelectList(Enum.GetValues(typeof(PropertyType)).Cast<PropertyType>());
+        var propertyTypes = Enum.GetValues(typeof(PropertyType))
+            .Cast<PropertyType>()
+            .Select(pt => new SelectListItem
+            {
+                Value = ((int)pt).ToString(),
+                Text = pt.ToString()
+            })
+            .ToList();
+
+        // Add the "Any" option with a null value at the beginning of the list
+        propertyTypes.Insert(0, new SelectListItem { Value = null, Text = "Any" });
+
+        PropertyTypes = new SelectList(propertyTypes, "Value", "Text");
         
         var currentYear = DateTime.Now.Year;
         Years = new SelectList(Enumerable.Range(2000, currentYear - 1999));

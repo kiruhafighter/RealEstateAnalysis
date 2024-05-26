@@ -176,6 +176,8 @@ public class PropertyService : IPropertyService
                 PropertyExpressionFilters.FilterByPrice(request.MinPrice, request.MaxPrice)),
             periodStart, periodEnd, cancellationToken);
         
+        averagePrices = averagePrices.OrderBy(p => p.Year).ThenBy(p => p.Month).ToList();
+        
         return Results.Ok(averagePrices);
     }
 }
