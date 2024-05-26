@@ -1,140 +1,200 @@
 ﻿@page
-@model RealEstateAnalysis.Client.Pages.AveragePrices
+@model RealEstateAnalysis.Client.Pages.AveragePricesModel
 @{
     ViewData["Title"] = "Average Property Prices";
 }
 
-<h1> Average Prices </h1>
+<h1>Average Property Prices</h1>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @Model.ErrorMessage
+    </div>
+}
+
+<style>
+    .form-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .form-container div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-container label {
+        margin-bottom: 5px;
+    }
+
+    .form-container input,
+    .form-container select {
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .form-container button {
+        grid-column: span 3;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .form-container button:hover {
+        background-color: #0056b3;
+    }
+
+    .chart-container {
+        margin-top: 30px;
+    }
+</style>
 
 <form method="post">
-    <div>
-        <label for="Name">Name:</label>
-        <input type="text" id="Name" name="Request.Name" />
-        <span asp-validation-for="Request.Name" class="text-danger"></span>
+    <div class="form-container">
+        <div>
+            <label for="Name">Name:</label>
+            <input type="text" id="Name" name="Request.Name" />
+            <span asp-validation-for="Request.Name" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="Address">Address:</label>
+            <input type="text" id="Address" name="Request.Address" />
+            <span asp-validation-for="Request.Address" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="County">County:</label>
+            <input type="text" id="County" name="Request.County" />
+            <span asp-validation-for="Request.County" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="Country">Country:</label>
+            <input type="text" id="Country" name="Request.Country" />
+            <span asp-validation-for="Request.Country" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="Locality">Locality:</label>
+            <input type="text" id="Locality" name="Request.Locality" />
+            <span asp-validation-for="Request.Locality" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="PropertyTypeId">Property Type:</label>
+            <select id="PropertyTypeId" asp-for="Request.PropertyTypeId" asp-items="Model.PropertyTypes"></select>
+            <span asp-validation-for="Request.PropertyTypeId" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="NumberOfRooms">Number Of Rooms:</label>
+            <input type="number" id="NumberOfRooms" name="Request.NumberOfRooms" />
+            <span asp-validation-for="Request.NumberOfRooms" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="NumberOfFloors">Number Of Floors:</label>
+            <input type="number" id="NumberOfFloors" name="Request.NumberOfFloors" />
+            <span asp-validation-for="Request.NumberOfFloors" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="MinYearBuilt">Minimal Year Built:</label>
+            <input type="number" id="MinYearBuilt" name="Request.MinYearBuilt" />
+            <span asp-validation-for="Request.MinYearBuilt" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="MaxYearBuilt">Maximum Year Built:</label>
+            <input type="number" id="MaxYearBuilt" name="Request.MaxYearBuilt" />
+            <span asp-validation-for="Request.MaxYearBuilt" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="MinPlotArea">Minimal Plot Area:</label>
+            <input type="number" id="MinPlotArea" name="Request.MinPlotArea" />
+            <span asp-validation-for="Request.MinPlotArea" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="MaxPlotArea">Maximum Plot Area:</label>
+            <input type="number" id="MaxPlotArea" name="Request.MaxPlotArea" />
+            <span asp-validation-for="Request.MaxPlotArea" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="MinFloorArea">Minimal Floor Area:</label>
+            <input type="number" id="MinFloorArea" name="Request.MinFloorArea" />
+            <span asp-validation-for="Request.MinFloorArea" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="MaxFloorArea">Maximum Floor Area:</label>
+            <input type="number" id="MaxFloorArea" name="Request.MaxFloorArea" />
+            <span asp-validation-for="Request.MaxFloorArea" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="MinPrice">Minimal Price:</label>
+            <input type="number" id="MinPrice" name="Request.MinPrice" />
+            <span asp-validation-for="Request.MinPrice" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="MaxPrice">Maximum Price:</label>
+            <input type="number" id="MaxPrice" name="Request.MaxPrice" />
+            <span asp-validation-for="Request.MaxPrice" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="StartYear">Start Year:</label>
+            <select id="StartYear" asp-for="Request.StartYear" asp-items="Model.Years"></select>
+            <span asp-validation-for="Request.StartYear" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="StartMonth">Start Month:</label>
+            <select id="StartMonth" asp-for="Request.StartMonth" asp-items="Model.Months"></select>
+            <span asp-validation-for="Request.StartMonth" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="EndYear">End Year:</label>
+            <select id="EndYear" asp-for="Request.EndYear" asp-items="Model.Years"></select>
+            <span asp-validation-for="Request.EndYear" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="EndMonth">End Month:</label>
+            <select id="EndMonth" asp-for="Request.EndMonth" asp-items="Model.Months"></select>
+            <span asp-validation-for="Request.EndMonth" class="text-danger"></span>
+        </div>
+        <button type="submit">Get Average Prices</button>
     </div>
-    <div>
-        <label for="Address">Address:</label>
-        <input type="text" id="Address" name="Request.Address" />
-        <span asp-validation-for="Request.Address" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="County">County:</label>
-        <input type="text" id="County" name="Request.County" />
-        <span asp-validation-for="Request.County" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="Country">Country:</label>
-        <input type="text" id="Country" name="Request.Country" />
-        <span asp-validation-for="Request.Country" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="Locality">Locality:</label>
-        <input type="text" id="Locality" name="Request.Locality" />
-        <span asp-validation-for="Request.Locality" class="text-danger"></span>
-    </div>  
-    <div>
-        <label for="PropertyTypeId">Property Type:</label>
-        <select id="PropertyTypeId" asp-for="Request.PropertyTypeId" asp-items="Model.PropertyTypes"></select>
-        <span asp-validation-for="Request.PropertyTypeId" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="NumberOfRooms">Number Of Rooms:</label>
-        <input type="number" id="NumberOfRooms" name="Request.NumberOfRooms" />
-        <span asp-validation-for="Request.NumberOfRooms" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="NumberOfFloors">Number Of Floors:</label>
-        <input type="number" id="NumberOfFloors" name="Request.NumberOfFloors" />
-        <span asp-validation-for="Request.NumberOfFloors" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="MinYearBuilt">Minimal Year Built:</label>
-        <input type="number" id="MinYearBuilt" name="Request.MinYearBuilt" />
-        <span asp-validation-for="Request.MinYearBuilt" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="MaxYearBuilt">Maximum Year Built:</label>
-        <input type="number" id="MaxYearBuilt" name="Request.MaxYearBuilt" />
-        <span asp-validation-for="Request.MaxYearBuilt" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="MinPlotArea">Minimal Plot Area:</label>
-        <input type="number" id="MinPlotArea" name="Request.MinPlotArea" />
-        <span asp-validation-for="Request.MinPlotArea" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="MaxPlotArea">Maximum Plot Area:</label>
-        <input type="number" id="MaxPlotArea" name="Request.MaxPlotArea" />
-        <span asp-validation-for="Request.MaxPlotArea" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="MinFloorArea">Minimal Floor Area:</label>
-        <input type="number" id="MinFloorArea" name="Request.MinFloorArea" />
-        <span asp-validation-for="Request.MinFloorArea" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="MaxFloorArea">Maximum Floor Area:</label>
-        <input type="number" id="MaxFloorArea" name="Request.MaxFloorArea" />
-        <span asp-validation-for="Request.MaxFloorArea" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="MinPrice">Minimal Price:</label>
-        <input type="number" id="MinPrice" name="Request.MinPrice" />
-        <span asp-validation-for="Request.MinPrice" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="MaxPrice">Maximum Price:</label>
-        <input type="number" id="MaxPrice" name="Request.MaxPrice" />
-        <span asp-validation-for="Request.MaxPrice" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="StartYear">Start Year:</label>
-        <select id="StartYear" asp-for="Request.StartYear" asp-items="Model.Years"></select>
-        <span asp-validation-for="Request.StartYear" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="StartMonth">Start Month:</label>
-        <select id="StartMonth" asp-for="Request.StartMonth" asp-items="Model.Months"></select>
-        <span asp-validation-for="Request.StartMonth" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="EndYear">End Year:</label>
-        <select id="EndYear" asp-for="Request.EndYear" asp-items="Model.Years"></select>
-        <span asp-validation-for="Request.EndYear" class="text-danger"></span>
-    </div>
-    <div>
-        <label for="EndMonth">End Month:</label>
-        <select id="EndMonth" asp-for="Request.EndMonth" asp-items="Model.Months"></select>
-        <span asp-validation-for="Request.EndMonth" class="text-danger"></span>
-    </div>
-    
-    <button type="submit">Get Average Prices</button>
 </form>
 
 @if (Model.AveragePricesList != null && Model.AveragePricesList.Any())
 {
-    <h2>Average Prices Chart</h2>
-    <canvas id="averagePricesChart"></canvas>
+    <div class="chart-container">
+        <h2>Average Prices Chart</h2>
+        <canvas id="averagePricesChart"></canvas>
+    </div>
+
     <script>
-        var ctx = document.getElementById('averagePricesChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: @Html.Raw(Json.Serialize(Model.AveragePricesList.Select(p => $"{p.Month}/{p.Year}"))),
-                datasets: [{
-                    label: 'Average Price',
-                    data: @Html.Raw(Json.Serialize(Model.AveragePricesList.Select(p => p.AveragePrice))),
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+        document.addEventListener('DOMContentLoaded', function () {
+            var ctx = document.getElementById('averagePricesChart').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: @Html.Raw(Json.Serialize(Model.AveragePricesList.Select(p => $"{p.Month}/{p.Year}"))),
+                    datasets: [{
+                        label: 'Average Price',
+                        data: @Html.Raw(Json.Serialize(Model.AveragePricesList.Select(p => p.AveragePrice))),
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
-            }
+            });
         });
+    
     </script>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }
