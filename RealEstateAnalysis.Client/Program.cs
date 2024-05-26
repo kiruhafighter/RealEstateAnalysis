@@ -1,15 +1,24 @@
 using ApiClient;
+using RealEstateAnalysis.Client.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-builder.Services.AddHttpClient<IClient, Client>(httpClient =>
+builder.Services.AddScoped<JwtAuthorizationMessageHandler>();
+
+builder.Services.AddHttpClient<IClient, Client>("NonAuthenticatedClient", httpClient =>
 {
     var baseUrl = builder.Configuration.GetValue<string>("ApiBaseUrl");
     httpClient.BaseAddress = new Uri(baseUrl!);
 });
+
+builder.Services.AddHttpClient<IClient, Client>("AuthenticatedClient", httpClient =>
+{
+    var baseUrl = builder.Configuration.GetValue<string>("ApiBaseUrl");
+    httpClient.BaseAddress = new Uri(baseUrl!);
+}).AddHttpMessageHandler<JwtAuthorizationMessageHandler>();
 
 var app = builder.Build();
 
