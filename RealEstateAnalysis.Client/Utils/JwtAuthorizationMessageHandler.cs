@@ -1,21 +1,20 @@
 ﻿using System.Net.Http.Headers;
-using Microsoft.JSInterop;
 
-namespace RealEstateAnalysis.Client.Authentication;
+namespace RealEstateAnalysis.Client.Utils;
 
 public class JwtAuthorizationMessageHandler : DelegatingHandler
 {
-    private readonly IJSRuntime _jsRuntime;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public JwtAuthorizationMessageHandler(IJSRuntime jsRuntime)
+    public JwtAuthorizationMessageHandler(IHttpContextAccessor httpContextAccessor)
     {
-        _jsRuntime = jsRuntime;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
         CancellationToken cancellationToken)
     {
-        var token = await GetTokenAsync();
+        var token = GetTokenFromCookie();
 
         if (!string.IsNullOrEmpty(token))
         {
@@ -25,8 +24,14 @@ public class JwtAuthorizationMessageHandler : DelegatingHandler
         return await base.SendAsync(request, cancellationToken);
     }
 
-    private async Task<string> GetTokenAsync()
+    private string? GetTokenFromCookie()
     {
-        return await _jsRuntime.InvokeAsync<string>("getJwtToken");
+        var httpContext = _httpContextAccessor.HttpContext;
+        if (httpContext != null && httpContext.Request.Cookies.ContainsKey("jwtToken"))
+        {
+            return httpContext.Request.Cookies["jwtToken"];
+        }
+
+        return null;
     }
 }

@@ -45,14 +45,6 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var token = '@TempData["JwtToken"]';
-            if (token) {
-                localStorage.setItem('jwtToken', token);
-            }
-        });
-    </script>
 }
 
 <style>

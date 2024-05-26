@@ -30,7 +30,13 @@ public class LoginModel : PageModel
         {
             var tokenDto = await _client.LoginUserAsync(UserLoginDto, default);
             
-            TempData["JwtToken"] = tokenDto.AccessToken;
+            Response.Cookies.Append("jwtToken", tokenDto.AccessToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = tokenDto.AccessTokenExpiryTime
+            });
             
             return RedirectToPage("/Index");
         }
