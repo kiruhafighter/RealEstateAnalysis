@@ -1,0 +1,115 @@
+﻿@page
+@model RealEstateAnalysis.Client.Pages.UserDetailsModel
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<h1>Your Profile Details</h1>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @Model.ErrorMessage
+    </div>
+}
+
+@if (Model.IsEditing)
+{
+    <form method="post">
+        <div class="form-group mb-3">
+            <label for="Email">Email</label>
+            <input type="email" class="form-control" id="Email" name="UpdateUserInfoDto.Email" value="@Model.UserDetails.Email" required />
+            <span asp-validation-for="UserDetails.Email" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label for="FirstName">First Name</label>
+            <input type="text" class="form-control" id="FirstName" name="UpdateUserInfoDto.FirstName" value="@Model.UserDetails.FirstName" required />
+            <span asp-validation-for="UserDetails.FirstName" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label for="LastName">Last Name</label>
+            <input type="text" class="form-control" id="LastName" name="UpdateUserInfoDto.LastName" value="@Model.UserDetails.LastName" required />
+            <span asp-validation-for="UserDetails.LastName" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" name="cancel" value="cancel" class="btn btn-secondary">Cancel</button>
+    </form>
+}
+else    
+{
+    @if (Model.UserDetails != null)
+    {
+        <div class="card">
+            <div class="card-header">
+                User Information
+            </div>
+            <div class="card-body">
+                <p><strong>Email:</strong> @Model.UserDetails.Email</p>
+                <p><strong>First Name:</strong> @Model.UserDetails.FirstName</p>
+                <p><strong>Last Name:</strong> @Model.UserDetails.LastName</p>
+            </div>
+        </div>
+        <form method="post">
+            <button type="submit" name="edit" value="edit" class="btn btn-primary mt-3">Edit</button>
+        </form>
+    }
+    else
+    {
+        <div class="alert alert-warning">
+            Unable to load user details. Please try again later.
+        </div>
+    }
+}
+
+<style>
+    .card {
+        margin-top: 20px;
+    }
+
+    .card-header {
+        font-weight: bold;
+        background-color: #007bff;
+        color: white;
+    }
+
+    .card-body {
+        padding: 20px;
+        background-color: #f8f9fa;
+    }
+
+    .alert {
+        margin-top: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        font-size: 1.2em;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+</style>
