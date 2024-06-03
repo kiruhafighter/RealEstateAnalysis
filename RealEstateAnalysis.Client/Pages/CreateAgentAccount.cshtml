@@ -1,0 +1,113 @@
+﻿@page
+@model RealEstateAnalysis.Client.Pages.CreateAgentAccountModel
+
+@{
+    ViewData["Title"] = "Create Agent Account";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header text-center">
+                    <h2>Create Agent Account</h2>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                    {
+                    <div class="alert alert-danger">
+                        @Model.ErrorMessage
+                    </div>
+                    }
+
+                    <form method="post" class="form">
+                        <div class="form-group mb-4">
+                            <label for="FirstName">First Name:</label>
+                            <input type="text" class="form-control form-control-lg" id="FirstName" name="AddAgentDto.FirstName" value="@Model.AddAgentDto.FirstName" required />
+                            <span asp-validation-for="AddAgentDto.FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="LastName">Last Name:</label>
+                            <input type="text" class="form-control form-control-lg" id="LastName" name="AddAgentDto.LastName" value="@Model.AddAgentDto.LastName" required/>
+                            <span asp-validation-for="AddAgentDto.LastName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="Email">Email:</label>
+                            <input type="email" class="form-control form-control-lg" id="Email" name="AddAgentDto.Email" value="@Model.AddAgentDto.Email" required pattern="^[\w\.-]+@@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,4}$"/>
+                            <span asp-validation-for="AddAgentDto.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="PhoneNumber">Phone Number:</label>
+                            <input type="text" class="form-control form-control-lg" id="PhoneNumber" name="AddAgentDto.PhoneNumber" value="@Model.AddAgentDto.PhoneNumber" required pattern="^\+?\d+$"/>
+                            <span asp-validation-for="AddAgentDto.PhoneNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="AgencyName">Agency Name:</label>
+                            <input type="text" class="form-control form-control-lg" id="AgencyName" name="AddAgentDto.AgencyName" value="@Model.AddAgentDto.AgencyName" required/>
+                            <span asp-validation-for="AddAgentDto.AgencyName" class="text-danger"></span>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Create</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .container {
+        margin-top: 50px;
+    }
+
+    .form-container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container h1 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .form-container label {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .form-control {
+        font-size: 1.2em;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+
+    .alert {
+        margin-top: 20px;
+    }
+</style>
