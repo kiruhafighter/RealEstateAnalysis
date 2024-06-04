@@ -1,10 +1,248 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Search Properties";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1>Filter Properties</h1>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @Model.ErrorMessage
+    </div>
+}
+
+<form method="post">
+    <div class="form-container">
+        <div>
+            <label for="Name">Name:</label>
+            <input type="text" id="Name" name="Request.Name" />
+            <span asp-validation-for="Request.Name" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="Address">Address:</label>
+            <input type="text" id="Address" name="Request.Address" />
+            <span asp-validation-for="Request.Address" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="County">County:</label>
+            <input type="text" id="County" name="Request.County" />
+            <span asp-validation-for="Request.County" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="Country">Country:</label>
+            <input type="text" id="Country" name="Request.Country" />
+            <span asp-validation-for="Request.Country" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="Locality">Locality:</label>
+            <input type="text" id="Locality" name="Request.Locality" />
+            <span asp-validation-for="Request.Locality" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="PropertyTypeId">Property Type:</label>
+            <select id="PropertyTypeId" asp-for="Request.PropertyTypeId" asp-items="Model.PropertyTypes"></select>
+            <span asp-validation-for="Request.PropertyTypeId" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="NumberOfRooms">Number Of Rooms:</label>
+            <input type="number" id="NumberOfRooms" name="Request.NumberOfRooms" />
+            <span asp-validation-for="Request.NumberOfRooms" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="NumberOfFloors">Number Of Floors:</label>
+            <input type="number" id="NumberOfFloors" name="Request.NumberOfFloors" />
+            <span asp-validation-for="Request.NumberOfFloors" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="MinYearBuilt">Minimal Year Built:</label>
+            <input type="number" id="MinYearBuilt" name="Request.MinYearBuilt" />
+            <span asp-validation-for="Request.MinYearBuilt" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="MaxYearBuilt">Maximum Year Built:</label>
+            <input type="number" id="MaxYearBuilt" name="Request.MaxYearBuilt" />
+            <span asp-validation-for="Request.MaxYearBuilt" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="MinPlotArea">Minimal Plot Area:</label>
+            <input type="number" id="MinPlotArea" name="Request.MinPlotArea" />
+            <span asp-validation-for="Request.MinPlotArea" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="MaxPlotArea">Maximum Plot Area:</label>
+            <input type="number" id="MaxPlotArea" name="Request.MaxPlotArea" />
+            <span asp-validation-for="Request.MaxPlotArea" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="MinFloorArea">Minimal Floor Area:</label>
+            <input type="number" id="MinFloorArea" name="Request.MinFloorArea" />
+            <span asp-validation-for="Request.MinFloorArea" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="MaxFloorArea">Maximum Floor Area:</label>
+            <input type="number" id="MaxFloorArea" name="Request.MaxFloorArea" />
+            <span asp-validation-for="Request.MaxFloorArea" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="MinPrice">Minimal Price:</label>
+            <input type="number" id="MinPrice" name="Request.MinPrice" />
+            <span asp-validation-for="Request.MinPrice" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="MaxPrice">Maximum Price:</label>
+            <input type="number" id="MaxPrice" name="Request.MaxPrice" />
+            <span asp-validation-for="Request.MaxPrice" class="text-danger"></span>
+        </div>
+        <div>
+            <label for="PageSize">Page Size</label>
+            <input type="number" id="PageSize" name="PageSize" value="@Model.PageSize" />
+        </div>
+
+        <input type="hidden" id="PageNumber" name="PageNumber" value="@Model.PageNumber" />
+        
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </div>
+</form>
+
+@if (Model.Properties.Count > 0)
+{
+    <div class="table-container">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>State</th>
+                <th>Property Type</th>
+                <th>Year Built</th>
+                <th>Floor Area</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Image</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var property in Model.Properties)
+            {
+            <tr>
+                <td>@property.Name</td>
+                <td>@property.Country</td>
+                <td>@property.PropertyType</td>
+                <td>@property.YearBuilt</td>
+                <td>@property.FloorArea</td>
+                <td>@property.Price</td>
+                <td>@property.PropertyStatus</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(property.FirstImage))
+                    {
+                        <img src="@Url.Content(property.FirstImage)" alt="Property Image" class="img-thumbnail" />
+                    }
+                </td>
+            </tr>
+            }
+            </tbody>
+        </table>
+
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                    <a href="#" class="page-link" onclick="setPageNumber(@i)">@i</a>
+                </li>
+                }
+            </ul>
+        </nav>
+    </div>
+}
+else if (Model.FirstRequestMade)
+{
+    <p>No properties found.</p>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function setPageNumber(pageNumber) {
+            document.getElementById('PageNumber').value = pageNumber;
+            document.querySelector('form').submit();
+        }
+    </script>
+}
+
+<style>
+    .form-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    .form-container div {
+        display: flex;
+        flex-direction: column;
+    }
+    .form-container label {
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    .form-container input,
+    .form-container select {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1em;
+    }
+    .form-container button {
+        grid-column: span 3;
+        padding: 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1.2em;
+    }
+    .form-container button:hover {
+        background-color: #0056b3;
+    }
+    .table-container {
+        margin-top: 30px;
+    }
+    .table th, .table td {
+        text-align: center;
+        vertical-align: middle;
+    }
+    .table img {
+        max-width: 100px;
+        height: auto;
+    }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .pagination .page-item .page-link {
+        color: #007bff;
+        text-decoration: none;
+        border: 1px solid #dee2e6;
+        padding: 10px 15px;
+        margin: 0 2px;
+        border-radius: 4px;
+    }
+    .pagination .page-item .page-link:hover {
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+    }
+    .pagination .page-item.disabled .page-link {
+        color: #6c757d;
+        pointer-events: none;
+        background-color: #fff;
+        border-color: #dee2e6;
+    }
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #fff;
+    }
+</style>

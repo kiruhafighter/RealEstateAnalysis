@@ -31,9 +31,9 @@ public class AgentAccountDetailsModel : PageModel
             AgentDetails = await _client.GetAgentProfileForUserAsync();
             return Page();
         }
-        catch (ApiException<string> ex)
+        catch (Exception ex)
         {
-            ErrorMessage = ex.Result;
+            ErrorMessage = ex.Message;
             return RedirectToPage("/CreateAgentAccount");
         }
     }

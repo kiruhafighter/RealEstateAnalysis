@@ -29,7 +29,7 @@ public class CreateAgentAccountModel : PageModel
         try
         {
             await _client.AddAgentAccountAsync(AddAgentDto);
-            return RedirectToPage("/Index");
+            return RedirectToPage("/AgentAccountDetails");
         }
         catch(ApiException<string> ex)
         {
