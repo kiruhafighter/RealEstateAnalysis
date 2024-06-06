@@ -85,20 +85,23 @@
                 <p><strong>Agent:</strong> @Model.Property.Agent.FirstName @Model.Property.Agent.LastName</p>
             </div>
         </div>
-        @if (Model.IsPropertyAgent())
+        @if (Model.IsAuthorized())
         {
-            <div class="update-property-button">
-                <a href="/UpdateProperty/@Model.Property.Id" class="btn btn-warning btn-lg mt-4">Update Property</a>
-            </div>
-        }
-        else
-        {
-            <div class="create-offer-button">
-                <a href="/AddOfferForProperty/@Model.Property.Id" class="btn btn-success btn-lg mt-4">Create Offer</a>
-            </div>
-            <div class="view-offers-button">
-                <a href="/UserOffersForProperty/@Model.Property.Id" class="btn btn-info btn-lg mt-4">View My Offers</a>
-            </div>
+            @if (Model.IsPropertyAgent())
+            {
+                <div class="update-property-button">
+                    <a href="/UpdateProperty/@Model.Property.Id" class="btn btn-warning btn-lg mt-4">Update Property</a>
+                </div>
+            }
+            else
+            {
+                <div class="create-offer-button">
+                    <a href="/AddOfferForProperty/@Model.Property.Id" class="btn btn-success btn-lg mt-4">Create Offer</a>
+                </div>
+                <div class="view-offers-button">
+                    <a href="/UserOffersForProperty/@Model.Property.Id" class="btn btn-info btn-lg mt-4">View My Offers</a>
+                </div>
+            }
         }
     </div>
 </div>

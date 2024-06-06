@@ -25,7 +25,7 @@
     </div>
     <div class="button-container">
         <button type="submit" class="btn btn-primary">Submit Offer</button>
-        <button type="submit" name="cancel" value="cancel" class="btn btn-secondary">Cancel</button>
+        <button type="button" onclick="cancelOffer()" class="btn btn-secondary">Cancel</button>
     </div>
 </form>
 
@@ -74,3 +74,11 @@
         margin-top: 15px;
     }
 </style>
+
+@section Scripts {
+<script>
+    function cancelOffer() {
+        window.location.href = '/PropertyDetails/@Model.AddOfferDto.PropertyId';
+    }
+</script>
+}

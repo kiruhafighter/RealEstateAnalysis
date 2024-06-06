@@ -66,4 +66,11 @@ public class PropertyDetailsModel : PageModel
         var userId = GetUserFromToken();
         return userId != null && Property?.Agent?.UserId.ToString() == userId; 
     }
+
+    public bool IsAuthorized()
+    {
+        var userId = GetUserFromToken();
+
+        return userId is not null;
+    }
 }
