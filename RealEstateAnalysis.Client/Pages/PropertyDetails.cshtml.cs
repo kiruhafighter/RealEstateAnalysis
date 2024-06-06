@@ -1,0 +1,69 @@
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using ApiClient;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace RealEstateAnalysis.Client.Pages;
+
+public class PropertyDetailsModel : PageModel
+{
+    private readonly IClient _client;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public PropertyDetailsModel(IClient client, IHttpContextAccessor httpContextAccessor)
+    {
+        _client = client;
+        _httpContextAccessor = httpContextAccessor;
+    }
+    
+    public PropertyDetailsDto? Property { get; set; }
+    
+    public string ErrorMessage { get; set; }
+    
+    public async Task<IActionResult> OnGetAsync(Guid id)
+    {
+        try
+        {
+            Property = await _client.GetPropertyDetailsAsync(id);
+            return Page();
+        }
+        catch (ApiException<string> ex)
+        {
+            ErrorMessage = ex.Result;
+            return RedirectToPage("/Error");
+        }
+    }
+
+    private string? GetUserFromToken()
+    {
+        var token = GetTokenFromCookie();
+        if (string.IsNullOrEmpty(token))
+        {
+            return null;
+        }
+        
+        var handler = new JwtSecurityTokenHandler();
+        var jwtToken = handler.ReadJwtToken(token);
+        var userIdClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier);
+        
+        return userIdClaim?.Value;
+    }
+
+    private string? GetTokenFromCookie()
+    {
+        var httpContext = _httpContextAccessor.HttpContext;
+        if (httpContext != null && httpContext.Request.Cookies.ContainsKey("jwtToken"))
+        {
+            return httpContext.Request.Cookies["jwtToken"];
+        }
+
+        return null;
+    }
+    
+    public bool CanUpdateProperty()
+    {
+        var userId = GetUserFromToken();
+        return userId != null && Property?.Agent?.UserId.ToString() == userId; 
+    }
+}

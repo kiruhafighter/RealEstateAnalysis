@@ -1,0 +1,126 @@
+﻿@page "{id:guid}"
+@model RealEstateAnalysis.Client.Pages.UpdatePropertyModel
+@{
+    ViewData["Title"] = "Update Property";
+}
+
+<h1>Update Property</h1>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @Model.ErrorMessage
+    </div>
+}
+
+<form method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="UpdatePropertyDto.Id" />
+    <div class="form-group mb-3">
+        <label for="Name">Name</label>
+        <input type="text" class="form-control" id="Name" name="UpdatePropertyDto.Name" value="@Model.UpdatePropertyDto.Name" required/>
+    </div>
+    <div class="form-group mb-3">
+        <label for="Address">Address</label>
+        <input type="text" class="form-control" id="Address" name="UpdatePropertyDto.Address" value="@Model.UpdatePropertyDto.Address" required/>
+    </div>
+    <div class="form-group mb-3">
+        <label for="Description">Description</label>
+        <textarea class="form-control" id="Description" name="UpdatePropertyDto.Description" required>@Model.UpdatePropertyDto.Description</textarea>
+    </div>
+    <div class="form-group mb-3">
+        <label for="County">County</label>
+        <input type="text" class="form-control" id="County" name="UpdatePropertyDto.County" value="@Model.UpdatePropertyDto.County" required/>
+    </div>
+    <div class="form-group mb-3">
+        <label for="Country">Country</label>
+        <input type="text" class="form-control" id="Country" name="UpdatePropertyDto.Country" value="@Model.UpdatePropertyDto.Country" required/>
+    </div>
+    <div class="form-group mb-3">
+        <label for="Locality">Locality</label>
+        <input type="text" class="form-control" id="Locality" name="UpdatePropertyDto.Locality" value="@Model.UpdatePropertyDto.Locality" required/>
+    </div>
+    <div class="form-group mb-3">
+        <label for="Postcode">Postcode</label>
+        <input type="text" class="form-control" id="Postcode" name="UpdatePropertyDto.Postcode" value="@Model.UpdatePropertyDto.Postcode" required/>
+    </div>
+    <div class="form-group mb-3">
+        <label for="PropertyTypeId">Property Type</label>
+        <input type="number" class="form-control" id="PropertyTypeId" name="UpdatePropertyDto.PropertyTypeId" value="@Model.UpdatePropertyDto.PropertyTypeId" required/>
+    </div>
+    <div class="form-group mb-3">
+        <label for="NumberOfRooms">Number of Rooms</label>
+        <input type="number" class="form-control" id="NumberOfRooms" name="UpdatePropertyDto.NumberOfRooms" value="@Model.UpdatePropertyDto.NumberOfRooms" required/>
+    </div>
+    <div class="form-group mb-3">
+        <label for="NumberOfFloors">Number of Floors</label>
+        <input type="number" class="form-control" id="NumberOfFloors" name="UpdatePropertyDto.NumberOfFloors" value="@Model.UpdatePropertyDto.NumberOfFloors"/>
+    </div>
+    <div class="form-group mb-3">
+        <label for="YearBuilt">Year Built</label>
+        <input type="number" class="form-control" id="YearBuilt" name="UpdatePropertyDto.YearBuilt" value="@Model.UpdatePropertyDto.YearBuilt"/>
+    </div>
+    <div class="form-group mb-3">
+        <label for="PlotArea">Plot Area</label>
+        <input type="number" class="form-control" id="PlotArea" name="UpdatePropertyDto.PlotArea" value="@Model.UpdatePropertyDto.PlotArea"/>
+    </div>
+    <div class="form-group mb-3">
+        <label for="FloorArea">Floor Area</label>
+        <input type="number" class="form-control" id="FloorArea" name="UpdatePropertyDto.FloorArea" value="@Model.UpdatePropertyDto.FloorArea" required/>
+    </div>
+    <div class="form-group mb-3">
+        <label for="Price">Price</label>
+        <input type="number" class="form-control" id="Price" name="UpdatePropertyDto.Price" value="@Model.UpdatePropertyDto.Price" required/>
+    </div>
+    <div class="form-group mb-3">
+        <label for="PropertyStatusId">Property Status</label>
+        <input type="number" class="form-control" id="PropertyStatusId" name="UpdatePropertyDto.PropertyStatusId" value="@Model.UpdatePropertyDto.PropertyStatusId" required/>
+    </div>
+    <div class="form-group mb-3">
+        <label for="UploadImage">Upload Image</label>
+        <input type="file" class="form-control" id="UploadImage" name="UploadImage"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="submit" name="cancel" value="cancel" class="btn btn-secondary">Cancel</button>
+</form>
+
+@if (Model.PropertyImages != null && Model.PropertyImages.Any())
+{
+    <div class="mt-4">
+        <h3>Property Images</h3>
+        <div class="row">
+            @foreach (var image in Model.PropertyImages)
+            {
+                <div class="col-md-3">
+                    <img src="@image.ImagePath" alt="Property Image" class="img-thumbnail" />
+                    <form method="post" asp-page-handler="DeleteImage" class="mt-2">
+                        <input type="hidden" name="propertyId" value="@Model.UpdatePropertyDto.Id" />
+                        <input type="hidden" name="imageId" value="@image.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<style>
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .img-thumbnail {
+        width: 100%;
+        height: auto;
+    }
+    .btn-sm {
+        padding: .25rem .5rem;
+        font-size: .875rem;
+        line-height: 1.5;
+        border-radius: .2rem;
+    }
+    .mt-4 {
+        margin-top: 1.5rem;
+    }
+    .mt-2 {
+        margin-top: .5rem;
+    }
+</style>

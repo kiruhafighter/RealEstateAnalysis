@@ -10,12 +10,6 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<JwtAuthorizationMessageHandler>();
 
-// builder.Services.AddHttpClient<IClient, Client>("NonAuthenticatedClient", httpClient =>
-// {
-//     var baseUrl = builder.Configuration.GetValue<string>("ApiBaseUrl");
-//     httpClient.BaseAddress = new Uri(baseUrl!);
-// });
-
 builder.Services.AddHttpClient<IClient, Client>(httpClient =>
 {
     var baseUrl = builder.Configuration.GetValue<string>("ApiBaseUrl");

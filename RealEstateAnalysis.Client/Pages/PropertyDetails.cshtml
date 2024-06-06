@@ -1,0 +1,174 @@
+﻿@page "{id:guid}"
+@model PropertyDetailsModel
+@{
+    ViewData["Title"] = "Property Details";
+}
+
+<h1>Property Details</h1>
+
+@if (Model.Property != null)
+{
+<div class="product-card">
+    <div class="product-header">
+        <h2>@Model.Property.Name</h2>
+    </div>
+    <div class="product-body">
+        <div class="product-images">
+            <div id="propertyImagesCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @if (Model.Property.Images != null && Model.Property.Images.Any())
+                    {
+                    var isActive = "active";
+                    foreach (var image in Model.Property.Images)
+                    {
+                    <div class="carousel-item @isActive">
+                        <img src="@Url.Content(image.ImagePath)" class="d-block w-100" alt="Property Image">
+                    </div>
+                    isActive = "";
+                    }
+                    }
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#propertyImagesCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#propertyImagesCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <div class="product-details">
+            <div class="details-box">
+                <p><strong>Address:</strong> @Model.Property.Address</p>
+            </div>
+            <div class="details-box">
+                <p><strong>Description:</strong> @Model.Property.Description</p>
+            </div>
+            <div class="details-box">
+                <p><strong>County:</strong> @Model.Property.County</p>
+            </div>
+            <div class="details-box">
+                <p><strong>Country:</strong> @Model.Property.Country</p>
+            </div>
+            <div class="details-box">
+                <p><strong>Locality:</strong> @Model.Property.Locality</p>
+            </div>
+            <div class="details-box">
+                <p><strong>Postcode:</strong> @Model.Property.Postcode</p>
+            </div>
+            <div class="details-box">
+                <p><strong>Property Type:</strong> @Model.Property.PropertyTypeName</p>
+            </div>
+            <div class="details-box">
+                <p><strong>Number of Rooms:</strong> @Model.Property.NumberOfRooms</p>
+            </div>
+            <div class="details-box">
+                <p><strong>Number of Floors:</strong> @Model.Property.NumberOfFloors</p>
+            </div>
+            <div class="details-box">
+                <p><strong>Year Built:</strong> @Model.Property.YearBuilt</p>
+            </div>
+            <div class="details-box">
+                <p><strong>Plot Area:</strong> @Model.Property.PlotArea</p>
+            </div>
+            <div class="details-box">
+                <p><strong>Floor Area:</strong> @Model.Property.FloorArea</p>
+            </div>
+            <div class="details-box">
+                <p><strong>Price:</strong> $@Model.Property.Price</p>
+            </div>
+            <div class="details-box">
+                <p><strong>Status:</strong> @Model.Property.PropertyStatusName</p>
+            </div>
+            <div class="details-box">
+                <p><strong>Agent:</strong> @Model.Property.Agent.FirstName @Model.Property.Agent.LastName</p>
+            </div>
+        </div>
+        @if (Model.CanUpdateProperty())
+        {
+            <div class="update-property-button">
+                <a href="/UpdateProperty/@Model.Property.Id" class="btn btn-warning btn-lg mt-4">Update Property</a>
+            </div>
+        }
+    </div>
+</div>
+}
+else
+{
+<div class="alert alert-warning">
+    Unable to load property details. Please try again later.
+</div>
+}
+
+<style>
+    .product-card {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px auto;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        max-width: 1200px;
+    }
+
+    .product-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .product-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-images {
+        width: 100%;
+        max-width: 900px;
+        margin-bottom: 20px;
+    }
+
+    .carousel-item img {
+        height: 500px;
+        object-fit: cover;
+    }
+
+    .product-details {
+        width: 100%;
+        max-width: 900px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .details-box {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 15px;
+        background-color: #f9f9f9;
+    }
+
+    .details-box p {
+        margin: 0;
+        font-size: 1.1em;
+        line-height: 1.5;
+    }
+
+    .details-box strong {
+        color: #333;
+    }
+
+    .update-property-button {
+        margin-top: 40px; /* Increase margin for more spacing */
+        text-align: center;
+    }
+
+    .btn-warning {
+        padding: 10px 20px;
+        font-size: 1.2em;
+    }
+</style>2
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js" integrity="sha512-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9OVZ2VZ3TC4x7N5k5+/rliZ/9fj50YcVw5L4ZPqI4jk0kOgE5eAeFgCg==" crossorigin="anonymous"></script>
+}

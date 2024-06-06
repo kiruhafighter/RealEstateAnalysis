@@ -126,7 +126,9 @@
             @foreach (var property in Model.Properties)
             {
             <tr>
-                <td>@property.Name</td>
+                <td>
+                    <a asp-page="/PropertyDetails" asp-route-id="@property.Id">@property.Name</a>
+                </td>
                 <td>@property.Country</td>
                 <td>@property.PropertyType</td>
                 <td>@property.YearBuilt</td>
