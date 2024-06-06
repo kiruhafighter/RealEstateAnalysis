@@ -26,6 +26,8 @@ public class AddPropertyModel : PageModel
     public SelectList PropertyTypes { get; set; }
     
     public SelectList PropertyStatuses { get; set; }
+    
+    public SelectList Years { get; set; }
 
     public IActionResult OnGet()
     {
@@ -92,5 +94,7 @@ public class AddPropertyModel : PageModel
             .ToList();
 
         PropertyStatuses = new SelectList(propertyStatuses, "Value", "Text");
+        
+        Years = new SelectList(Enumerable.Range(1950, 2024));
     }
 }

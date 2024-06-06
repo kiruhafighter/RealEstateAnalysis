@@ -27,6 +27,8 @@ public class UpdatePropertyModel : PageModel
     
     public SelectList PropertyStatuses { get; set; }
     
+    public SelectList Years { get; set; }
+    
     public string? ErrorMessage { get; set; }
     
     public async Task<IActionResult> OnGet(Guid id)
@@ -143,5 +145,7 @@ public class UpdatePropertyModel : PageModel
             .ToList();
 
         PropertyStatuses = new SelectList(propertyStatuses, "Value", "Text");
+        
+        Years = new SelectList(Enumerable.Range(1950, 2024));
     }
 }

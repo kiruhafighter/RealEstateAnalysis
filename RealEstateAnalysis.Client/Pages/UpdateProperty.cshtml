@@ -57,7 +57,7 @@
     </div>
     <div class="form-group mb-3">
         <label for="YearBuilt">Year Built</label>
-        <input type="number" class="form-control" id="YearBuilt" name="UpdatePropertyDto.YearBuilt" value="@Model.UpdatePropertyDto.YearBuilt"/>
+        <select class="form-control" id="YearBuilt" asp-for="UpdatePropertyDto.YearBuilt" asp-items="Model.Years"></select>
     </div>
     <div class="form-group mb-3">
         <label for="PlotArea">Plot Area</label>
