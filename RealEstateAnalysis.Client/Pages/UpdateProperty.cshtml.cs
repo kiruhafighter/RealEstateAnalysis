@@ -1,6 +1,8 @@
 ﻿using ApiClient;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using RealEstateAnalysis.Client.Enums;
 
 namespace RealEstateAnalysis.Client.Pages;
 
@@ -21,10 +23,16 @@ public class UpdatePropertyModel : PageModel
     
     public IList<ImageListedDto>? PropertyImages { get; set; }
     
+    public SelectList PropertyTypes { get; set; }
+    
+    public SelectList PropertyStatuses { get; set; }
+    
     public string? ErrorMessage { get; set; }
     
     public async Task<IActionResult> OnGet(Guid id)
     {
+        PopulateDropdowns();
+        
         try
         {
             var property = await _client.GetPropertyDetailsAsync(id);
@@ -110,5 +118,30 @@ public class UpdatePropertyModel : PageModel
     public IActionResult OnPostCancel()
     {
         return RedirectToPage("/PropertyDetails", new { id = UpdatePropertyDto.Id });
+    }
+    
+    private void PopulateDropdowns()
+    {
+        var propertyTypes = Enum.GetValues(typeof(PropertyType))
+            .Cast<PropertyType>()
+            .Select(pt => new SelectListItem
+            {
+                Value = ((int)pt).ToString(),
+                Text = pt.ToString()
+            })
+            .ToList();
+
+        PropertyTypes = new SelectList(propertyTypes, "Value", "Text");
+        
+        var propertyStatuses = Enum.GetValues(typeof(PropertyStatus))
+            .Cast<PropertyStatus>()
+            .Select(ps => new SelectListItem
+            {
+                Value = ((int)ps).ToString(),
+                Text = ps.ToString()
+            })
+            .ToList();
+
+        PropertyStatuses = new SelectList(propertyStatuses, "Value", "Text");
     }
 }

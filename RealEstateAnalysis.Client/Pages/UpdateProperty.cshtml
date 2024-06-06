@@ -45,7 +45,7 @@
     </div>
     <div class="form-group mb-3">
         <label for="PropertyTypeId">Property Type</label>
-        <input type="number" class="form-control" id="PropertyTypeId" name="UpdatePropertyDto.PropertyTypeId" value="@Model.UpdatePropertyDto.PropertyTypeId" required/>
+        <select class="form-control" id="PropertyTypeId" asp-for="UpdatePropertyDto.PropertyTypeId" asp-items="Model.PropertyTypes"></select>
     </div>
     <div class="form-group mb-3">
         <label for="NumberOfRooms">Number of Rooms</label>
@@ -73,7 +73,7 @@
     </div>
     <div class="form-group mb-3">
         <label for="PropertyStatusId">Property Status</label>
-        <input type="number" class="form-control" id="PropertyStatusId" name="UpdatePropertyDto.PropertyStatusId" value="@Model.UpdatePropertyDto.PropertyStatusId" required/>
+        <select class="form-control" id="PropertyStatusId" asp-for="UpdatePropertyDto.PropertyStatusId" asp-items="Model.PropertyStatuses"></select>
     </div>
     <div class="form-group mb-3">
         <label for="UploadImage">Upload Image</label>
@@ -107,20 +107,50 @@
     .form-group {
         margin-bottom: 15px;
     }
-    .img-thumbnail {
-        width: 100%;
-        height: auto;
+
+    .form-control {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
     }
+
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
     .btn-sm {
         padding: .25rem .5rem;
         font-size: .875rem;
         line-height: 1.5;
         border-radius: .2rem;
     }
+
     .mt-4 {
         margin-top: 1.5rem;
     }
+
     .mt-2 {
         margin-top: .5rem;
+    }
+
+    .img-thumbnail {
+        width: 100%;
+        height: auto;
     }
 </style>
