@@ -1,0 +1,85 @@
+﻿@page "{propertyId:guid}"
+@model RealEstateAnalysis.Client.Pages.OffersForPropertyModel
+@{
+    ViewData["Title"] = "Agent Offers";
+}
+
+<h1>Offers for Property</h1>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @Model.ErrorMessage
+    </div>
+}
+
+@if (Model.Offers.Count > 0)
+{
+    <div class="offers-table-container">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Property Name</th>
+                <th>Offer Amount</th>
+                <th>Offer Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var offer in Model.Offers)
+            {
+                <tr class="@(offer.OfferStatusId switch { 1 => "offer-active", 2 => "offer-inactive", 3 => "offer-pending", 4 => "offer-rejected", _ => "" })">
+                    <td>@offer.PropertyName</td>
+                    <td>@offer.OfferAmount</td>
+                    <td>@offer.OfferDate.ToString("g")</td>
+                    <td>@offer.OfferStatusName</td>
+                    <td>
+                        @if (Model.IsPendingOffer(offer))
+                        {
+                            <form method="post" class="manage-offer-form">
+                                <input type="hidden" name="offerId" value="@offer.Id"/>
+                                <input type="hidden" name="propertyId" value="@offer.PropertyId"/>
+                                <button type="submit" name="accept" value="accept" class="btn btn-success btn-sm">Accept</button>
+                                <button type="submit" name="reject" value="reject" class="btn btn-danger btn-sm">Reject</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <p>No offers found for this property.</p>
+}
+
+<a href="/PropertyDetails/@Model.PropertyId" class="btn btn-secondary">Back to Property Details</a>
+
+<style>
+    .offers-table-container {
+        margin-top: 20px;
+    }
+
+    .offer-active {
+        background-color: #d4edda;
+    }
+
+    .offer-inactive {
+        background-color: #f8d7da;
+    }
+
+    .offer-pending {
+        background-color: #fff3cd;
+    }
+
+    .offer-rejected {
+        background-color: #f5c6cb;
+    }
+
+    .manage-offer-form {
+        display: inline;
+    }
+</style>

@@ -18,14 +18,14 @@
                 <div class="carousel-inner">
                     @if (Model.Property.Images != null && Model.Property.Images.Any())
                     {
-                    var isActive = "active";
-                    foreach (var image in Model.Property.Images)
-                    {
-                    <div class="carousel-item @isActive">
-                        <img src="@Url.Content(image.ImagePath)" class="d-block w-100" alt="Property Image">
-                    </div>
-                    isActive = "";
-                    }
+                        var isActive = "active";
+                        foreach (var image in Model.Property.Images)
+                        {
+                            <div class="carousel-item @isActive">
+                                <img src="@Url.Content(image.ImagePath)" class="d-block w-100" alt="Property Image">
+                            </div>
+                            isActive = "";
+                        }
                     }
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#propertyImagesCarousel" data-bs-slide="prev">
@@ -92,6 +92,9 @@
                 <div class="update-property-button">
                     <a href="/UpdateProperty/@Model.Property.Id" class="btn btn-warning btn-lg mt-4">Update Property</a>
                 </div>
+                <div class="view-offers-button">
+                    <a href="/OffersForProperty/@Model.Property.Id" class="btn btn-info btn-lg mt-4">View Offers</a>
+                </div>
             }
             else
             {
@@ -108,9 +111,9 @@
 }
 else
 {
-<div class="alert alert-warning">
-    Unable to load property details. Please try again later.
-</div>
+    <div class="alert alert-warning">
+        Unable to load property details. Please try again later.
+    </div>
 }
 
 <style>
