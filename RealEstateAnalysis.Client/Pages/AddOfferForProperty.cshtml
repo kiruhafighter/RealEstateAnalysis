@@ -1,0 +1,76 @@
+﻿@page "{propertyId:guid}"
+@model RealEstateAnalysis.Client.Pages.AddOfferForPropertyModel
+@{
+    ViewData["Title"] = "Add Offer";
+}
+
+<h1>Add Offer</h1>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @Model.ErrorMessage
+    </div>
+}
+
+<form method="post" class="form-container">
+    <input type="hidden" name="AddOfferDto.PropertyId" value="@Model.AddOfferDto.PropertyId" />
+    <div class="form-group mb-3">
+        <label for="OfferAmount">Offer Amount</label>
+        <input type="number" class="form-control" id="OfferAmount" name="AddOfferDto.OfferAmount" value="@Model.AddOfferDto.OfferAmount" required/>
+    </div>
+    <div class="form-group mb-3">
+        <label for="Comment">Comment</label>
+        <textarea class="form-control" id="Comment" name="AddOfferDto.Comment">@Model.AddOfferDto.Comment</textarea>
+    </div>
+    <div class="button-container">
+        <button type="submit" class="btn btn-primary">Submit Offer</button>
+        <button type="submit" name="cancel" value="cancel" class="btn btn-secondary">Cancel</button>
+    </div>
+</form>
+
+<style>
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        padding: 10px 20px;
+        font-size: 16px;
+        margin-right: 10px;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: flex-start;
+        margin-top: 15px;
+    }
+</style>

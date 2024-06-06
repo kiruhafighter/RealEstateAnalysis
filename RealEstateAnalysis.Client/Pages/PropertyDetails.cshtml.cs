@@ -61,7 +61,7 @@ public class PropertyDetailsModel : PageModel
         return null;
     }
     
-    public bool CanUpdateProperty()
+    public bool IsPropertyAgent()
     {
         var userId = GetUserFromToken();
         return userId != null && Property?.Agent?.UserId.ToString() == userId; 

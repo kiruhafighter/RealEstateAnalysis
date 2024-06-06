@@ -4,7 +4,15 @@
     ViewData["Title"] = "Search Properties";
 }
 
-<h1>Filter Properties</h1>
+<div class="header-container">
+    @if (Model.CanAddProperty())
+    {
+        <div class="add-property-button">
+            <a asp-page="/AddProperty" class="btn btn-success">Add Property</a>
+        </div>
+    }
+    <h1>Filter Properties</h1>
+</div>
 
 @if (!string.IsNullOrEmpty(Model.ErrorMessage))
 {
@@ -174,6 +182,19 @@ else if (Model.FirstRequestMade)
 }
 
 <style>
+    .header-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    .add-property-button {
+        flex: 0 1 auto;
+    }
+    .header-container h1 {
+        flex: 1 0 auto;
+        text-align: center;
+    }
     .form-container {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

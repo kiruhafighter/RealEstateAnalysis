@@ -1,3 +1,5 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using ApiClient;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,10 +12,13 @@ namespace RealEstateAnalysis.Client.Pages
     public class IndexModel : PageModel
     {
         private readonly IClient _client;
+        
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public IndexModel(IClient client)
+        public IndexModel(IClient client, IHttpContextAccessor httpContextAccessor)
         {
             _client = client;
+            _httpContextAccessor = httpContextAccessor;
         }
         
         [BindProperty]
@@ -112,5 +117,37 @@ namespace RealEstateAnalysis.Client.Pages
         
         public bool HasPreviousPage => PageNumber > 1;
         public bool HasNextPage => PageNumber * PageSize < TotalCount;
+
+        private string? GetUserRoleFromToken()
+        {
+            var token = GetTokenFromCookie();
+            if (string.IsNullOrEmpty(token))
+            {
+                return null;
+            }
+            
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var userRoleClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role);
+        
+            return userRoleClaim?.Value;
+        }
+        
+        private string? GetTokenFromCookie()
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            if (httpContext != null && httpContext.Request.Cookies.ContainsKey("jwtToken"))
+            {
+                return httpContext.Request.Cookies["jwtToken"];
+            }
+
+            return null;
+        }
+        
+        public bool CanAddProperty()
+        {
+            var userRole = GetUserRoleFromToken();
+            return userRole is "Agent" or "Admin";
+        }
     }
 }

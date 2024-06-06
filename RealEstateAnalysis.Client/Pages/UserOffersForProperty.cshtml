@@ -1,0 +1,96 @@
+﻿@page "{propertyId:guid}"
+@model RealEstateAnalysis.Client.Pages.UserOffersForPropertyModel
+@{
+ViewData["Title"] = "User Offers";
+}
+
+<h1>User Offers for Property</h1>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+<div class="alert alert-danger">
+    @Model.ErrorMessage
+</div>
+}
+
+@if (Model.Offers.Count > 0)
+{
+<div class="offers-table-container">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Property Name</th>
+            <th>Offer Amount</th>
+            <th>Offer Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var offer in Model.Offers)
+        {
+        <tr class="@(offer.OfferStatusId switch { 1 => "offer-active", 2 => "offer-inactive", 3 => "offer-pending", 4 => "offer-rejected", _ => "" })">
+            <td>@offer.PropertyName</td>
+            <td>@offer.OfferAmount</td>
+            <td>@offer.OfferDate.ToString("g")</td>
+            <td>@offer.OfferStatusName</td>
+            <td>
+                @if (Model.CanDeleteOffer(offer))
+                {
+                <form method="post" asp-page-handler="Delete" class="delete-offer-form">
+                    <input type="hidden" name="offerId" value="@offer.Id"/>
+                    <input type="hidden" name="propertyId" value="@offer.PropertyId"/>
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+                }
+            </td>
+        </tr>
+        }
+        </tbody>
+    </table>
+</div>
+}
+else
+{
+    <p>No offers found for this property.</p>
+}
+
+<div class="back-to-details-button">
+    <a href="/PropertyDetails/@Model.PropertyId" class="btn btn-secondary">Back to Property Details</a>
+</div>
+
+<style>
+    .offers-table-container {
+        margin-top: 20px;
+    }
+
+    .offer-active {
+        background-color: #d4edda;
+    }
+
+    .offer-inactive {
+        background-color: #f8d7da;
+    }
+
+    .offer-pending {
+        background-color: #fff3cd;
+    }
+
+    .offer-rejected {
+        background-color: #f5c6cb;
+    }
+
+    .delete-offer-form {
+        display: inline;
+    }
+
+    .back-to-details-button {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .btn-secondary {
+        padding: 10px 20px;
+        font-size: 1.2em;
+    }
+</style>
