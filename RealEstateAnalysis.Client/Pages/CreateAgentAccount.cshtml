@@ -15,9 +15,9 @@
                 <div class="card-body">
                     @if (!string.IsNullOrEmpty(Model.ErrorMessage))
                     {
-                    <div class="alert alert-danger">
-                        @Model.ErrorMessage
-                    </div>
+                        <div class="alert alert-danger">
+                            @Model.ErrorMessage
+                        </div>
                     }
 
                     <form method="post" class="form">
@@ -46,8 +46,11 @@
                             <input type="text" class="form-control form-control-lg" id="AgencyName" name="AddAgentDto.AgencyName" value="@Model.AddAgentDto.AgencyName" required/>
                             <span asp-validation-for="AddAgentDto.AgencyName" class="text-danger"></span>
                         </div>
-                        <div class="d-grid">
+                        <div class="d-grid mb-3">
                             <button type="submit" class="btn btn-primary btn-lg">Create</button>
+                        </div>
+                        <div class="d-grid">
+                            <button type="button" onclick="location.href='@Url.Page("/UserDetails")'" class="btn btn-secondary btn-lg">Go Back</button>
                         </div>
                     </form>
                 </div>
@@ -109,5 +112,14 @@
 
     .alert {
         margin-top: 20px;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
     }
 </style>

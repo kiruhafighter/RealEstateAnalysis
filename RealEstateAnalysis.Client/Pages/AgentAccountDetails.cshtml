@@ -57,8 +57,8 @@ else
                 <p><strong>First Name:</strong> @Model.AgentDetails.FirstName</p>
                 <p><strong>Last Name:</strong> @Model.AgentDetails.LastName</p>
                 <p><strong>Email:</strong> @Model.AgentDetails.Email</p>
-                <p><strong>Email:</strong> @Model.AgentDetails.PhoneNumber</p>
-                <p><strong>Email:</strong> @Model.AgentDetails.AgencyName</p>
+                <p><strong>Phone Number:</strong> @Model.AgentDetails.PhoneNumber</p>
+                <p><strong>Agency Name:</strong> @Model.AgentDetails.AgencyName</p>
             </div>
         </div>
         <form method="post">
@@ -72,6 +72,8 @@ else
         </div>
     }
 }
+
+<button type="button" onclick="location.href='@Url.Page("/UserDetails")'" class="btn btn-secondary mt-3">Go Back</button>
 
 <style>
     .card {
