@@ -1,0 +1,43 @@
+﻿body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.navbar {
+    font-size: 1.1em;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.8em;
+    color: #0056b3 !important;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #343a40 !important;
+}
+
+.nav-link:hover {
+    color: #0056b3 !important;
+}
+
+.footer {
+    padding: 10px 0;
+}
+
+.navbar-logo {
+    height: 50px; /* Adjust the height to align with the navbar elements */
+    width: auto; /* Maintain aspect ratio */
+    margin-right: 1px; /* Space between logo and text */
+}
+
+.navbar-toggler {
+    font-size: 1.1em;
+    font-weight: 600;
+}

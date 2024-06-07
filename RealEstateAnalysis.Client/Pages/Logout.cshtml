@@ -1,0 +1,16 @@
+﻿@page
+@model RealEstateAnalysis.Client.Pages.LogoutModel
+@{
+    ViewData["Title"] = "Logout";
+}
+
+<h1>Logging out...</h1>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Redirect to home page after logout
+            window.location.href = '@Url.Page("/Index")';
+        });
+    </script>
+}

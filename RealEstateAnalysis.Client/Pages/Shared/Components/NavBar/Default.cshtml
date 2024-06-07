@@ -1,0 +1,19 @@
+﻿@model bool
+
+<ul class="navbar-nav">
+    @if (Model)
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-page="/UserDetails">My Account</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Log out</a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-page="/Login">Login</a>
+        </li>
+    }
+</ul>
