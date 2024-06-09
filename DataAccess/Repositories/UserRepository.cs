@@ -29,15 +29,15 @@ internal sealed class UserRepository : BaseRepository<User, Guid>, IUserReposito
 
     public async Task<bool> UpdateUserInfoAsync(Guid id, string email, string firstName, string lastName, CancellationToken cancellationToken)
     {
-            var updated = await Context.Set<User>()
-                .Where(u => u.Id.Equals(id))
-                .ExecuteUpdateAsync(s => s
-                    .SetProperty(u => u.Email, email)
-                    .SetProperty(u => u.FirstName, firstName)
-                    .SetProperty(u => u.LastName, lastName), cancellationToken);
+        var updated = await Context.Set<User>()
+            .Where(u => u.Id.Equals(id))
+            .ExecuteUpdateAsync(s => s
+                .SetProperty(u => u.Email, email)
+                .SetProperty(u => u.FirstName, firstName)
+                .SetProperty(u => u.LastName, lastName), cancellationToken);
             
-            return updated > 0;
-        }
+        return updated > 0;
+    }
 
     public async Task<bool> UpdateUserRoleAsync(Guid id, int newRoleId, CancellationToken cancellationToken)
     {
