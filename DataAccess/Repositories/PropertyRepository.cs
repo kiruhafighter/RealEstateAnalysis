@@ -56,7 +56,8 @@ internal sealed class PropertyRepository : BaseRepository<Property, Guid>, IProp
         return (totalCount, properties);
     }
 
-    public async Task<IList<AveragePriceForMonth>> GetAveragePriceForTimePeriodAsync(Expression<Func<Property, bool>> where, DateTime startDate, DateTime endDate, CancellationToken cancellationToken)
+    public async Task<IList<AveragePriceForMonth>> GetAveragePriceForTimePeriodAsync(Expression<Func<Property, bool>> where,
+        DateTime startDate, DateTime endDate, CancellationToken cancellationToken)
     {
         int months = (endDate.Year - startDate.Year) * 12 + endDate.Month - startDate.Month + 1;
         
