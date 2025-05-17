@@ -1,10 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>RealEstateAnalysis</RootNamespace>
+        <UserSecretsId>11684a7a-fdb7-4089-9c43-d571f414088e</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
