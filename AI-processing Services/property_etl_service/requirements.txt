@@ -1,0 +1,6 @@
+pyodbc
+psycopg2-binary
+requests
+python-dotenv
+schedule
+ollama
