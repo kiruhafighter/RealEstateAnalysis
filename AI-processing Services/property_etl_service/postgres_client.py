@@ -5,13 +5,13 @@ def upsert_embedding(record):
     conn = psycopg2.connect(get_env("POSTGRES_CONN_STR"))
     cur = conn.cursor()
     cur.execute("""
-        INSERT INTO property_embeddings (id, property_id, description, embedding, last_synced_at)
-        VALUES (%s, %s, %s, %s, now())
+        INSERT INTO property_embeddings (property_id, description, embedding, last_synced_at)
+        VALUES (%s, %s, %s, now())
         ON CONFLICT (property_id) DO UPDATE
         SET description = EXCLUDED.description,
             embedding = EXCLUDED.embedding,
             last_synced_at = now();
-    """, (record["id"], record["property_id"], record["description"], record["embedding"]))
+    """, (record["property_id"], record["description"], record["embedding"]))
     conn.commit()
     cur.close()
     conn.close()
