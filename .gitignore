@@ -6,4 +6,4 @@ riderModule.iml
 **/__pycache__/
 *.py[cod]
 venv/
-.env/
+**/.env
