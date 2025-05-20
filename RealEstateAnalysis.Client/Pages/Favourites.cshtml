@@ -1,0 +1,79 @@
+@page
+@model FavouritesModel
+@{
+    ViewData["Title"] = "My Favourites";
+}
+
+<h1>My Favourite Properties</h1>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @Model.ErrorMessage
+    </div>
+}
+
+@if (Model.Favourites.Any())
+{
+    <div class="favourites-list">
+        @foreach (var favourite in Model.Favourites)
+        {
+            <div class="favourite-item">
+                <a asp-page="/PropertyDetails" asp-route-id="@favourite.PropertyId" class="favourite-link">
+                    <div class="favourite-details">
+                        <h3>@favourite.PropertyName</h3>
+                        <p>Price: @favourite.Price.ToString("C")</p>
+                    </div>
+                    @if (!string.IsNullOrEmpty(favourite.FirstImage))
+                    {
+                        <img src="@Url.Content(favourite.FirstImage)" alt="Property Image" class="favourite-image" />
+                    }
+                </a>
+                <form method="post" asp-page-handler="Remove" asp-route-id="@favourite.Id" class="delete-form">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>You have no favourite properties.</p>
+}
+
+<style>
+    .favourites-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    .favourite-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 15px;
+        width: 250px;
+        text-align: center;
+        position: relative;
+    }
+    .favourite-link {
+        text-decoration: none;
+        color: inherit;
+    }
+    .favourite-details {
+        margin-bottom: 10px;
+    }
+    .favourite-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
+    .delete-form {
+        margin-top: auto;
+        width: 100%;
+        text-align: center;
+    }
+</style>
