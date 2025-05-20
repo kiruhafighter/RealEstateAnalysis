@@ -6,6 +6,10 @@
 
         public string PropertyName { get; init; } = default!;
         
+        public string? FirstImage { get; init; }
+        
+        public decimal Price { get; init; }
+        
         public Guid PropertyId { get; init; }
     }
 }

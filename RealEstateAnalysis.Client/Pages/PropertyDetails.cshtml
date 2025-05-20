@@ -105,6 +105,20 @@
                     <a href="/UserOffersForProperty/@Model.Property.Id" class="btn btn-info btn-lg mt-4">View My Offers</a>
                 </div>
             }
+            <div class="favourite-button">
+                @if (Model.IsFavourited)
+                {
+                    <form method="post" asp-page-handler="RemoveFromFavourites">
+                        <button type="submit" class="btn btn-danger btn-lg mt-4">Remove from Favourites</button>
+                    </form>
+                }
+                else
+                {
+                    <form method="post" asp-page-handler="AddToFavourites">
+                        <button type="submit" class="btn btn-primary btn-lg mt-4">Add to Favourites</button>
+                    </form>
+                }
+            </div>
         }
     </div>
 </div>
@@ -175,7 +189,8 @@ else
 
     .update-property-button,
     .create-offer-button,
-    .view-offers-button {
+    .view-offers-button,
+    .favourite-button {
         margin-top: 20px;
         text-align: center;
     }
@@ -191,6 +206,16 @@ else
     }
 
     .btn-info {
+        padding: 10px 20px;
+        font-size: 1.2em;
+    }
+
+    .btn-danger {
+        padding: 10px 20px;
+        font-size: 1.2em;
+    }
+
+    .btn-primary {
         padding: 10px 20px;
         font-size: 1.2em;
     }

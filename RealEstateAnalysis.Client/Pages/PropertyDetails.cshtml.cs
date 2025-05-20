@@ -21,11 +21,19 @@ public class PropertyDetailsModel : PageModel
     
     public string ErrorMessage { get; set; }
     
+    public bool IsFavourited { get; set; }
+    
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
         try
         {
             Property = await _client.GetPropertyDetailsAsync(id);
+
+            if (IsAuthorized())
+            {
+                IsFavourited = await _client.CheckIfPropertyIsFavouriteAsync(id);
+            }
+            
             return Page();
         }
         catch (ApiException<string> ex)
@@ -33,6 +41,50 @@ public class PropertyDetailsModel : PageModel
             ErrorMessage = ex.Result;
             return RedirectToPage("/Error");
         }
+    }
+    
+    public async Task<IActionResult> OnPostAddToFavouritesAsync(Guid id)
+    {
+        try
+        {
+            if (IsAuthorized())
+            {
+                await _client.AddUsersFavouriteAsync(id);
+            }
+            else
+            {
+                ErrorMessage = "You need to be logged in to add properties to your favourites.";
+            }
+        }
+        catch (ApiException<string> ex)
+        {
+            ErrorMessage = ex.Result;
+            return RedirectToPage("/Error");
+        }
+
+        return RedirectToPage("/PropertyDetails", new { id });
+    }
+    
+    public async Task<IActionResult> OnPostRemoveFromFavouritesAsync(Guid id)
+    {
+        try
+        {
+            if (IsAuthorized())
+            {
+                await _client.RemovePropertyFromFavouritesAsync(id);
+            }
+            else
+            {
+                ErrorMessage = "You need to be logged in to remove properties from your favourites.";
+            }
+        }
+        catch (ApiException<string> ex)
+        {
+            ErrorMessage = ex.Result;
+            return RedirectToPage("/Error");
+        }
+
+        return RedirectToPage("/PropertyDetails", new { id });
     }
 
     private string? GetUserFromToken()

@@ -8,6 +8,10 @@ namespace Services.IServices
         
         Task<IResult> RemoveFavouriteAsync(Guid userId, int usersFavouriteId, CancellationToken cancellationToken);
         
+        Task<IResult> RemovePropertyFromFavouritesAsync(Guid userId, Guid propertyId, CancellationToken cancellationToken);
+        
         Task<IResult> GetFavouritesAsync(Guid userId, CancellationToken cancellationToken);
+
+        Task<IResult> GetIsInFavouritesForUserAsync(Guid userId, Guid propertyId, CancellationToken cancellationToken);
     }
 }

@@ -77,6 +77,16 @@ public sealed class UsersFavouriteService : IUsersFavouriteService
         return Results.Ok();
     }
 
+    public async Task<IResult> RemovePropertyFromFavouritesAsync(Guid userId, Guid propertyId, CancellationToken cancellationToken)
+    {
+        if (!await _usersFavouriteRepository.RemoveForUserAsync(userId, propertyId, cancellationToken))
+        {
+            return Results.StatusCode(StatusCodes.Status500InternalServerError);
+        }
+        
+        return Results.Ok();
+    }
+
     public async Task<IResult> GetFavouritesAsync(Guid userId, CancellationToken cancellationToken)
     {
         if (!await _userRepository.ExistsAsync(userId, cancellationToken))
@@ -89,5 +99,12 @@ public sealed class UsersFavouriteService : IUsersFavouriteService
         var favouritesListed = _mapper.Map<List<UsersFavouriteListedDto>>(favourites);
         
         return Results.Ok(favouritesListed);
+    }
+
+    public async Task<IResult> GetIsInFavouritesForUserAsync(Guid userId, Guid propertyId, CancellationToken cancellationToken)
+    {
+        var isInFavourites = await _usersFavouriteRepository.ExistsForUserAsync(userId, propertyId, cancellationToken);
+        
+        return Results.Ok(isInFavourites);
     }
 }
