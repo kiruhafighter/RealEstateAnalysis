@@ -7,8 +7,9 @@
 <div class="header-container">
     @if (Model.CanAddProperty())
     {
-        <div class="add-property-button">
-            <a asp-page="/AddProperty" class="btn btn-success">Add Property</a>
+        <div class="button-group">
+            <a asp-page="/AddProperty" class="btn btn-add">Add Property</a>
+            <a asp-page="/MyProperties" class="btn btn-my">My Properties</a>
         </div>
     }
     <h1>Filter Properties</h1>
@@ -187,13 +188,44 @@ else if (Model.FirstRequestMade)
         align-items: center;
         justify-content: space-between;
         margin-bottom: 20px;
-    }
-    .add-property-button {
-        flex: 0 1 auto;
+        flex-wrap: wrap;
     }
     .header-container h1 {
-        flex: 1 0 auto;
+        flex: 1;
         text-align: center;
+        margin: 0;
+    }
+    .button-group {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        margin-right: 20px;
+    }
+    .btn-add {
+        padding: 10px 20px;
+        background-color: #28a745; /* Green */
+        color: white;
+        border: none;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+    .btn-add:hover {
+        background-color: #218838;
+    }
+    .btn-my {
+        padding: 10px 20px;
+        background-color: #17a2b8; /* Teal/Blue */
+        color: white;
+        border: none;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+    .btn-my:hover {
+        background-color: #117a8b;
     }
     .form-container {
         display: grid;
