@@ -4,7 +4,6 @@ import uuid
 import random
 import os
 from dotenv import load_dotenv
-from datetime import datetime
 
 load_dotenv()
 conn = pyodbc.connect(os.getenv('SQLSERVER_CONN_STR'))
@@ -36,7 +35,7 @@ prompt = (
     "The JSON must be valid and include all fields. Description must not exceed 500 characters. Do not include any comments, markdown, or explanation.\n"
 )
 
-for _ in range(50):
+for _ in range(100):
     response = ollama.chat(model='mistral:instruct', messages=[{'role': 'user', 'content': prompt}])
     content = response['message']['content']
 

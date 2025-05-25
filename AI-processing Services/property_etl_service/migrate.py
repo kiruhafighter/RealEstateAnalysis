@@ -1,6 +1,6 @@
 from sqlserver_client import get_active_properties
 from embedding import get_embedding
-from postgres_client import upsert_embedding, delete_outdated_properties
+from postgres_client import upsert_embedding, delete_outdated_properties, analyze_table
 
 def format_description(row):
     return f"""
@@ -27,3 +27,4 @@ def run_pipeline():
         valid_ids.append(row["PropertyId"])
 
     delete_outdated_properties(valid_ids)
+    analyze_table()

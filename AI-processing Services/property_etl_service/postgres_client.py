@@ -23,3 +23,11 @@ def delete_outdated_properties(valid_ids):
     conn.commit()
     cur.close()
     conn.close()
+
+def analyze_table():
+    conn = psycopg2.connect(get_env("POSTGRES_CONN_STR"))
+    cur = conn.cursor()
+    cur.execute("ANALYZE property_embeddings;")
+    conn.commit()
+    cur.close()
+    conn.close()

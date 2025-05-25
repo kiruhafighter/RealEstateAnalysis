@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from datetime import datetime, timedelta
 from decimal import Decimal
 
-MAX_PROPERTIES = 100
+MAX_PROPERTIES = 300
 MIN_DAYS = 90
 MAX_DAYS = 365
 MIN_PERCENT = 0.02
