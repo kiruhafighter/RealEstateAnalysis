@@ -2,8 +2,18 @@ import psycopg2
 from config import POSTGRES_CONN_STR
 from embedding import get_query_embedding
 
-def search_similar_properties(query, top_k=5):
-    query_emb = get_query_embedding(query).tolist()
+def extract_user_query_context(message: str, history: list[dict], max_length: int = 1500) -> str:
+    """Combines current user message with prior user messages, truncated to max_length characters."""
+    combined = ""
+    for entry in history:
+        if entry["role"] == "user":
+            combined += entry["content"].strip() + "\n"
+    combined += message.strip()
+    return combined[-max_length:]
+
+def search_similar_properties(query, history=[], top_k=5):
+    contextual_query = extract_user_query_context(query, history)
+    query_emb = get_query_embedding(contextual_query).tolist()
 
     conn = psycopg2.connect(POSTGRES_CONN_STR)
     cur = conn.cursor()

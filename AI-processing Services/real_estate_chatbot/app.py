@@ -17,15 +17,22 @@ def chat():
         return jsonify({"error": "Missing message"}), 400
 
     try:
-        properties = search_similar_properties(user_message)
+        properties = search_similar_properties(user_message, chat_history)
         property_ids = [pid for pid, _ in properties]
+
+        if not property_ids:
+            return jsonify({
+                "response": "Sorry, I couldn't find any properties matching your preferences. Please refine your criteria.",
+                "suggested_property_ids": []
+            })
+
         details = get_property_details(property_ids)
         context = format_rich_context(details, APP_URL)
         response = generate_llm_response(user_message, chat_history, context)
 
         return jsonify({
             "response": response,
-            "suggested_property_ids": [pid for pid, _ in properties]
+            "suggested_property_ids": property_ids
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
