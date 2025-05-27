@@ -67,6 +67,15 @@ public static class PropertyEndpoints
             .WithName(nameof(GetAveragePricesForPeriod))
             .WithOpenApi();
         
+        webApplication.MapPost($"/{RouteNameConstants.Properties}/{RouteNameConstants.ByIds}",
+                GetListOfPropertiesByIds)
+            .AllowAnonymous()
+            .Produces<List<PropertyListedDto>>()
+            .Produces<string>(StatusCodes.Status400BadRequest)
+            .WithTags(nameof(PropertyEndpoints))
+            .WithName(nameof(GetListOfPropertiesByIds))
+            .WithOpenApi();
+        
         return webApplication;
     }
     
@@ -74,6 +83,12 @@ public static class PropertyEndpoints
         [AsParameters] FilterPropertiesRequest filterRequest, CancellationToken cancellationToken)
     {
         return await propertyService.GetPropertiesFilteredAsync(filterRequest, cancellationToken);
+    }
+    
+    private static async Task<IResult> GetListOfPropertiesByIds([FromServices] IPropertyService propertyService,
+        [FromBody] GetListOfPropertiesByIdsRequest getListOfPropertiesByIdsRequest, CancellationToken cancellationToken)
+    {
+        return await propertyService.GetListOfPropertiesByIdsAsync(getListOfPropertiesByIdsRequest, cancellationToken);
     }
     
     private static async Task<IResult> GetPropertyDetails([FromServices] IPropertyService propertyService,

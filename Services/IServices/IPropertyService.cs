@@ -8,6 +8,8 @@ public interface IPropertyService
 {
     Task<IResult> GetPropertiesFilteredAsync(FilterPropertiesRequest filterRequest, CancellationToken cancellationToken);
     
+    Task<IResult> GetListOfPropertiesByIdsAsync(GetListOfPropertiesByIdsRequest getListOfPropertiesByIdsRequest, CancellationToken cancellationToken);
+    
     Task<IResult> GetAgentPropertiesAsync(Guid agentId, CancellationToken cancellationToken);
         
     Task<IResult> GetByIdAsync(Guid id, CancellationToken cancellationToken);

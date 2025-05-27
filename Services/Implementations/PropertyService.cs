@@ -54,6 +54,23 @@ public class PropertyService : IPropertyService
         });
     }
 
+    public async Task<IResult> GetListOfPropertiesByIdsAsync(GetListOfPropertiesByIdsRequest getListOfPropertiesByIdsRequest, CancellationToken cancellationToken)
+    {
+        var ids = getListOfPropertiesByIdsRequest.PropertyIds.ToList();
+        
+        if (ids.Count < 1)
+        {
+            return Results.BadRequest("Property Ids are not provided");
+        }
+        
+        var properties = await _propertyRepository.GetManyByConditionAsync(
+            p => ids.Contains(p.Id), cancellationToken);
+        
+        var propertiesList = _mapper.Map<List<PropertyListedDto>>(properties);
+        
+        return Results.Ok(propertiesList);
+    }
+
     public async Task<IResult> GetAgentPropertiesAsync(Guid agentId, CancellationToken cancellationToken)
     {
         if (!await _agentRepository.ExistsAsync(agentId, cancellationToken))

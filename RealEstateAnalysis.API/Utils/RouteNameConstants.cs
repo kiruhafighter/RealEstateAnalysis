@@ -29,4 +29,6 @@ internal struct RouteNameConstants
     internal const string Filter = "filter";
 
     internal const string AveragePrices = "average-prices";
+    
+    internal const string ByIds = "by-ids";
 }
