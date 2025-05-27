@@ -53,19 +53,51 @@
 </div>
 
 @section Scripts {
-<script>
+    <script>
     function showLoading() {
-        var loading = document.getElementById('loadingIndicator');
-        if (loading) loading.style.display = '';
+        const loading = document.getElementById('loadingIndicator');
+        const input = document.getElementById('UserMessage');
+        const chatHistory = document.getElementById('chatHistory');
+        const message = input.value.trim();
+
+        if (message) {
+            const msgDiv = document.createElement("div");
+            msgDiv.className = "chat-message user-message";
+            msgDiv.innerHTML = `
+                <span class="role">You:</span>
+                <span class="content">${escapeHtml(message)}</span>
+            `;
+            chatHistory.insertBefore(msgDiv, loading);
+        }
+
+        if (loading) {
+            loading.style.display = '';
+        }
     }
+
+    function escapeHtml(text) {
+        return text.replace(/[&<>"']/g, function (m) {
+            return ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            })[m];
+        });
+    }
+
     window.addEventListener('DOMContentLoaded', function () {
-        var loading = document.getElementById('loadingIndicator');
+        const loading = document.getElementById('loadingIndicator');
+        const input = document.getElementById('UserMessage');
+        const sendBtn = document.getElementById('sendBtn');
+
         if (loading) loading.style.display = 'none';
-        var userMessageInput = document.getElementById('UserMessage');
-        if (userMessageInput) userMessageInput.value = '';
-        var sendBtn = document.getElementById('sendBtn');
+        if (input) input.disabled = false;
         if (sendBtn) sendBtn.disabled = false;
-        if (userMessageInput) userMessageInput.disabled = false;
+
+        // Razor re-renders input after post, so clear it
+        if (input) input.value = '';
     });
 </script>
 }

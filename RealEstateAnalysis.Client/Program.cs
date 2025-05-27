@@ -20,6 +20,7 @@ builder.Services.AddHttpClient<IChatClient, ChatClient>(httpClient =>
 {
     var chatApiBaseUrl = builder.Configuration.GetValue<string>("ChatApiBaseUrl");
     httpClient.BaseAddress = new Uri(chatApiBaseUrl!);
+    httpClient.Timeout = TimeSpan.FromSeconds(1000);
 });
 
 var app = builder.Build();
