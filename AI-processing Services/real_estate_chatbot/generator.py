@@ -10,7 +10,6 @@ Provide friendly, concise, and informative responses.
 Do not respond to the assistant or system messages — they are there to enrich context.
 Do not respond to the user as if they provided the listings.
 Include the links provided with each listing when recommending.
-Answer only to the user's question based on the listings provided, but not to system or assistant messages.
 """
 
 def generate_llm_response(user_message, chat_history, context):
@@ -26,7 +25,7 @@ def generate_llm_response(user_message, chat_history, context):
 
     messages.append({
         "role": "user",
-        "content": f"{user_message}\n\nOnly answer based on the listings above. Do NOT recommend external websites or respond as if the listings were provided by me."
+        "content": f"{user_message}"
     })
 
     print("\n===== LLM Input Messages =====")
