@@ -23,13 +23,9 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    - ./postgres/custom-entrypoint.sh:/custom-entrypoint.sh
+    - postgres_data:/var/lib/postgresql/data
+    entrypoint: ["/bin/bash", "/custom-entrypoint.sh"]
 
   ollama:
     image: ollama/ollama
