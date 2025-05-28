@@ -11,6 +11,21 @@ services:
       - ./sqlserver:/init
       - sqlserver_data:/var/opt/mssql
     entrypoint: /bin/bash /init/docker-entrypoint-init.sh
+    healthcheck:
+      test: [
+        "CMD",
+        "/opt/mssql-tools18/bin/sqlcmd",
+        "-S", "localhost",
+        "-U", "sa",
+        "-P", "SQL_Server_Password123!",
+        "-d", "RealEstateDB",
+        "-C",
+        "-Q",
+        "SELECT 1"
+      ]
+      interval: 10s
+      timeout: 5s
+      retries: 15
 
   postgres:
     image: ankane/pgvector
@@ -26,6 +41,11 @@ services:
     - ./postgres/custom-entrypoint.sh:/custom-entrypoint.sh
     - postgres_data:/var/lib/postgresql/data
     entrypoint: ["/bin/bash", "/custom-entrypoint.sh"]
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
 
   ollama:
     image: ollama/ollama
@@ -42,6 +62,11 @@ services:
         cat /models.txt | xargs -n 1 ollama pull &&
         wait
       "
+    healthcheck:
+      test: ["CMD-SHELL", "ps aux | grep '[o]llama serve' > /dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
 
   api:
     build:
@@ -50,7 +75,8 @@ services:
     ports:
       - "5000:80"
     depends_on:
-      - sqlserver
+      sqlserver:
+        condition: service_healthy
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__RealEstateManagementDB=Server=sqlserver;Database=RealEstateDB;User Id=sa;Password=SQL_Server_Password123!;TrustServerCertificate=True;
@@ -65,9 +91,12 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - sqlserver
-      - postgres
-      - ollama
+      sqlserver:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
     env_file:
       - ./AI-processing Services/real_estate_chatbot/.env
     environment:
@@ -96,9 +125,12 @@ services:
       dockerfile: Dockerfile.etl
     container_name: etl
     depends_on:
-      - sqlserver
-      - postgres
-      - ollama
+      sqlserver:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
     env_file:
       - ./AI-processing Services/property_etl_service/.env
     environment:
