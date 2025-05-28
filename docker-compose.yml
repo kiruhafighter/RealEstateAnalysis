@@ -18,7 +18,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 2729
+      POSTGRES_PASSWORD: 2222
       POSTGRES_DB: postgres
     ports:
       - "5432:5432"
@@ -75,7 +75,7 @@ services:
       - ./AI-processing Services/real_estate_chatbot/.env
     environment:
       - SQLSERVER_CONN_STR=Driver={ODBC Driver 17 for SQL Server};Server=sqlserver;Database=RealEstateDB;Uid=sa;Pwd=SQL_Server_Password123!;TrustServerCertificate=yes
-      - POSTGRES_CONN_STR=postgresql://postgres:2729@postgres:5432/ai_property_db
+      - POSTGRES_CONN_STR=postgresql://postgres:2222@postgres:5432/ai_property_db
       - APP_URL=http://client
 
   client:
@@ -90,6 +90,22 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ApiBaseUrl=http://api
       - ChatApiBaseUrl=http://chatbot:8000
+
+  etl:
+    build:
+      context: ./AI-processing Services/property_etl_service
+      dockerfile: Dockerfile.etl
+    container_name: etl
+    depends_on:
+      - sqlserver
+      - postgres
+      - ollama
+    env_file:
+      - ./AI-processing Services/property_etl_service/.env
+    environment:
+      - SQLSERVER_CONN_STR=Driver={ODBC Driver 17 for SQL Server};Server=sqlserver;Database=RealEstateDB;Uid=sa;Pwd=SQL_Server_Password123!;TrustServerCertificate=yes
+      - POSTGRES_CONN_STR=postgresql://postgres:2222@postgres:5432/ai_property_db
+      - OLLAMA_API=http://ollama:11434
 
 volumes:
   sqlserver_data:
