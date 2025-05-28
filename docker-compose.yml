@@ -48,6 +48,19 @@ services:
         wait
       "
 
+  api:
+    build:
+      context: .
+      dockerfile: RealEstateAnalysis.API/Dockerfile.api
+    ports:
+      - "5000:80"
+    depends_on:
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__RealEstateManagementDB=Server=sqlserver;Database=RealEstateDB;User Id=sa;Password=SQL_Server_Password123!;TrustServerCertificate=True;
+      - Jwt__Key=thisisaverylongandsecurestring!@#$%^&*()
+
 volumes:
   sqlserver_data:
   postgres_data:
