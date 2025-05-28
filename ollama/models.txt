@@ -1,0 +1,3 @@
+llama2:7b-chat
+nomic-embed-text:latest
+mistral:instruct
