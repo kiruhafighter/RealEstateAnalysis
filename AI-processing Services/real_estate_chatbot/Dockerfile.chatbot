@@ -1,24 +1,25 @@
 FROM python:3.13-slim
 
-# Set working directory
 WORKDIR /app
 
-# Install system dependencies
+# System deps for pyodbc and psycopg2
 RUN apt-get update && \
-    apt-get install -y gcc g++ curl unixodbc-dev gnupg && \
-    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
-    curl https://packages.microsoft.com/config/debian/12/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
-    apt-get update && ACCEPT_EULA=Y apt-get install -y msodbcsql17 && \
+    apt-get install -y gcc g++ curl unixodbc-dev gnupg libpq-dev && \
+    mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/keyrings/microsoft.gpg && \
+    echo "deb [signed-by=/etc/apt/keyrings/microsoft.gpg] https://packages.microsoft.com/debian/12/prod bookworm main" > /etc/apt/sources.list.d/mssql-release.list && \
+    apt-get update && \
+    ACCEPT_EULA=Y apt-get install -y msodbcsql17 && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy app code and requirements
+# Python deps
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt --verbose
 
+# App code
 COPY . .
 
-# Load environment variables from Docker Compose
+# Default command
 ENV FLASK_APP=app.py
-
 EXPOSE 8000
 CMD ["flask", "run", "--host=0.0.0.0", "--port=8000"]

@@ -59,6 +59,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__RealEstateManagementDB=Server=sqlserver;Database=RealEstateDB;User Id=sa;Password=SQL_Server_Password123!;TrustServerCertificate=True;
       - Jwt__Key=thisisaverylongandsecurestring!@#$%^&*()
+      - ASPNETCORE_URLS=http://+:80
 
   chatbot:
     build:
@@ -90,6 +91,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ApiBaseUrl=http://api
       - ChatApiBaseUrl=http://chatbot:8000
+      - ASPNETCORE_URLS=http://+:80
 
   etl:
     build:
