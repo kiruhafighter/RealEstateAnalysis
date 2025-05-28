@@ -1,4 +1,4 @@
-import ollama
+import requests
 import pyodbc
 import uuid
 import random
@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
+OLLAMA_API = os.getenv("OLLAMA_API", "http://localhost:11434")
 conn = pyodbc.connect(os.getenv('SQLSERVER_CONN_STR'))
 cursor = conn.cursor()
 
@@ -35,9 +36,26 @@ prompt = (
     "The JSON must be valid and include all fields. Description must not exceed 500 characters. Do not include any comments, markdown, or explanation.\n"
 )
 
+def generate_listing(prompt):
+    try:
+        res = requests.post(
+            f"{OLLAMA_API}/api/chat",
+            json={
+                "model": "mistral:instruct",
+                "messages": [{"role": "user", "content": prompt}]
+            },
+            timeout=10000
+        )
+        res.raise_for_status()
+        return res.json()['message']['content']
+    except Exception as e:
+        print(f"Error during Ollama chat: {e}")
+        return None
+
 for _ in range(100):
-    response = ollama.chat(model='mistral:instruct', messages=[{'role': 'user', 'content': prompt}])
-    content = response['message']['content']
+    content = generate_listing(prompt)
+    if not content:
+        continue
 
     try:
         data = eval(content)

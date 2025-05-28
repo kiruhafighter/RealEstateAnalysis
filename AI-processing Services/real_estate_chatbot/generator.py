@@ -1,5 +1,6 @@
-import ollama
+import requests
 from config import MODEL_CHAT
+from config import OLLAMA_API
 
 SYSTEM_PROMPT = """You are a helpful real estate assistant working inside a property search application called Prime Estate.
 Only use the information provided in the listings below to answer the user's question.
@@ -34,7 +35,16 @@ def generate_llm_response(user_message, chat_history, context):
     print("===== End Messages =====\n")
 
     try:
-        res = ollama.chat(model=MODEL_CHAT, messages=messages)
-        return res["message"]["content"]
+        response = requests.post(
+            f"{OLLAMA_API}/api/chat",
+            json={
+                "model": MODEL_CHAT,
+                "messages": messages,
+                "stream": False
+            },
+            timeout=10000
+        )
+        response.raise_for_status()
+        return response.json()["message"]["content"]
     except Exception as e:
         raise RuntimeError(f"LLM generation failed: {e}")
