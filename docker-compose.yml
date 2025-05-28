@@ -74,6 +74,7 @@ services:
       - SQLSERVER_CONN_STR=Driver={ODBC Driver 17 for SQL Server};Server=sqlserver;Database=RealEstateDB;Uid=sa;Pwd=SQL_Server_Password123!;TrustServerCertificate=yes
       - POSTGRES_CONN_STR=postgresql://postgres:2222@postgres:5432/ai_property_db
       - APP_URL=http://client
+      - OLLAMA_API=http://ollama:11434
 
   client:
     build:
@@ -129,6 +130,7 @@ services:
       - ./AI-processing Services/properties_populate_script/.env
     environment:
       - SQLSERVER_CONN_STR=Driver={ODBC Driver 17 for SQL Server};Server=sqlserver;Database=RealEstateDB;Uid=sa;Pwd=SQL_Server_Password123!;TrustServerCertificate=yes
+      - OLLAMA_API=http://ollama:11434
 
   property_history:
     build:
