@@ -121,6 +121,17 @@ services:
     volumes:
       - ./RealEstateAnalysis.Client/wwwroot/images:/images
 
+  populate_properties:
+    build:
+      context: ./AI-processing Services/properties_populate_script
+      dockerfile: Dockerfile.populate
+    container_name: populate_properties
+    entrypoint: ["sleep", "infinity"]
+    env_file:
+      - ./AI-processing Services/properties_populate_script/.env
+    environment:
+      - SQLSERVER_CONN_STR=Driver={ODBC Driver 17 for SQL Server};Server=sqlserver;Database=RealEstateDB;Uid=sa;Pwd=SQL_Server_Password123!;TrustServerCertificate=yes
+
 volumes:
   sqlserver_data:
   postgres_data:
