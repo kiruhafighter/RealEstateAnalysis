@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 DB_CONN_STRING = os.getenv('SQLSERVER_CONN_STR')
-IMAGES_DIR = "C:\\Users\\KirillSalomatin\\Projects\\Uni\\RealEstateAnalysis\\RealEstateAnalysis.Client\\wwwroot\\images"
+IMAGES_DIR = os.getenv("IMAGES_DIR", "/images")
 ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
 MAX_IMAGES_PER_PROPERTY = 3
 EXCLUDED_IMAGES = {"icon.png", "logo.png"}
