@@ -11,3 +11,21 @@ services:
     volumes:
       - ./sqlserver:/init
     entrypoint: /bin/bash /init/docker-entrypoint-init.sh
+
+  postgres:
+    image: ankane/pgvector
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 2729
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
