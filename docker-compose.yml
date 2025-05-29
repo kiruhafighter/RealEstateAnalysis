@@ -67,6 +67,15 @@ services:
       interval: 10s
       timeout: 5s
       retries: 15
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    runtime: nvidia
 
   api:
     build:
